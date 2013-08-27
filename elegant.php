@@ -1,14 +1,13 @@
-<?php namespace Elegant;
-
+<?php
 class Elegant {
 
 	function __construct()
 	{
-		require_once 'helper.php';
-		require_once 'row.php';
-		require_once 'result.php';
-		require_once 'querybuilder.php';
-		require_once 'model.php';
+		require_once 'src/helper.php';
+		require_once 'src/row.php';
+		require_once 'src/result.php';
+		require_once 'src/querybuilder.php';
+		require_once 'src/model.php';
 		// require_once 'relationship.php';
 
 		$mod_path = APPPATH . 'models/';

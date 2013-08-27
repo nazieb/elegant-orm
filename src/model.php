@@ -8,21 +8,30 @@ class Model {
 
 	protected $db_group = "default";
 	protected $table = "";
+
 	protected $primary = "id";
+	protected $incrementing = true;
 
 	protected $queryBuilder = null;
+
+	public $exists = false;
 
 	public $data = array();
 
 	function __construct()
 	{
 		$this->ci =& get_instance();
+
+		// Reset variable
+		$this->data = array();
+		$this->exists = false;
+		$this->queryBuilder = null;
 	}
 
 	protected function callMethod($name, $arguments)
 	{
 		if(method_exists($this, $name))
-			return call_user_func_array( array($this->db_conn, $name), $arguments );
+			return call_user_func_array( array($this, $name), $arguments );
 
 		if(is_null( $this->queryBuilder )) $this->queryBuilder = $this->newQuery();
 
@@ -94,9 +103,34 @@ class Model {
 		return $result->first();
 	}
 
-
 	protected function save()
 	{
+		if(empty($this->data)) return false;
 
+		$builder = $this->newQuery();
+
+		// Do an insert statement
+		if(!$this->exists)
+		{
+			if( !$this->incrementing and empty( $this->data[ $this->primary ] ) ) return false;
+
+			$return = $builder->insert( $this->data );
+
+			if($return !== false)
+			{
+				$this->exists = true;
+
+				if( $this->incrementing )
+					$this->data[ $this->primary ] = $builder->insert_id();
+			}
+
+			return $return;
+		}
+		else
+		{
+			$where = array($this->primary => $this->data[ $this->primary ]);
+
+			return $builder->update($this->data, $where);
+		}
 	}
 }

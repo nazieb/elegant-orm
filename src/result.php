@@ -26,7 +26,10 @@ class Result {
 
 		foreach($this->query->result_array() as $rowData)
 		{
-			$newRow = new Row(new $class, $rowData);
+			$model = new $class;
+			$model->exists = true;
+
+			$newRow = new Row($model, $rowData);
 			$rows[] = $newRow;
 		}
 

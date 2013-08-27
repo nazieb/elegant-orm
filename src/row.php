@@ -9,15 +9,18 @@ class Row {
 	function __construct(Model $model, $rowObject)
 	{
 		$this->model = $model;
+
+		$this->model->exists = true;
 		$this->model->data = $rowObject;
 	}
 
-	// Accessor
+	// Getter
 	function __get($field)
 	{
 		return $this->model->$field;
 	}
 
+	// Setter
 	function __set($field, $value)
 	{
 		$this->model->$field = $value;
@@ -25,6 +28,7 @@ class Row {
 
 	function save()
 	{
+		var_dump($this->model->exists);
 		$this->model->save();
 	}
 
