@@ -1,4 +1,4 @@
-# Elegant ORM
+# Elegant ORM [BETA]
 
 ORM for CodeIgniter based on Laravel's Eloquent. The Elegant ORM brings the beauty and simplicity of working with Eloquent ORM in Laravel to CodeIgniter framework.
 
@@ -33,3 +33,5 @@ Here are some properties you can use to customize the model
 - `$db_group` : to define which database group the model will connect. The groups can be found in `config/database.php`. By default it uses "default" group
 - `$primary` : to define the column name of the table's primary key. Default is "id". If your PK has other name than "id" you should change this
 - `$incrementing` : to define whether your PK is auto-increment. Default value is `true`. If you'd like to generate your Primary Key value by custom function, set this to `false`
+
+## For now you can use some of Laravel Eloquent method and functionality. Read the documentation here http://laravel.com/docs/eloquent and try to apply those in your CodeIgniter application
