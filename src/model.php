@@ -28,7 +28,7 @@ class Model {
 		$this->queryBuilder = null;
 	}
 
-	protected function callMethod($name, $arguments)
+	public function __call($name, $arguments)
 	{
 		if(method_exists($this, $name))
 			return call_user_func_array( array($this, $name), $arguments );
@@ -41,11 +41,6 @@ class Model {
 		return show_error('Unknown function '.$name, 500);
 	}
 
-	public function __call($name, $arguments)
-	{
-		return $this->callMethod($name, $arguments);
-	}
-
 	public static function __callStatic($name, $arguments)
 	{
 		$model = get_called_class();
@@ -55,6 +50,11 @@ class Model {
 
 	function __get($field)
 	{
+		if($field == 'query')
+		{
+			return $this->newQuery();
+		}
+
 		if(!isset( $this->data[ $field ] )) return null;
 		$value = $this->data[ $field ];
 		return $value;
