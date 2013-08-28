@@ -28,12 +28,12 @@ class Row {
 
 	function save()
 	{
-		$this->model->save();
+		return $this->model->save();
 	}
 
-	function destroy()
+	function delete()
 	{
-		$this->model->destroy();
+		return $this->model->delete();
 	}
 
 }

@@ -27,8 +27,10 @@ class QueryBuilder {
 		return ($insert !== false) ? $this->db_conn->insert_id() : false;
 	}
 
-	function update($data, $where)
+	function update($data, $where = array())
 	{
+		if(empty($where) and !is_array($where)) $where = array();
+
 		$update = $this->db_conn->update( $this->table, $data, $where );
 		return $update;
 	}
