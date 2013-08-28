@@ -28,7 +28,6 @@ class Row {
 
 	function save()
 	{
-		var_dump($this->model->exists);
 		$this->model->save();
 	}
 
