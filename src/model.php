@@ -2,6 +2,7 @@
 
 use Elegant\QueryBuilder;
 use Elegant\Result;
+use Elegant\Helper;
 
 class Model {
 	protected $ci = null;
@@ -161,8 +162,21 @@ class Model {
 
 	public function __call($name, $arguments)
 	{
+		// Check if the method is available in this model
 		if(method_exists($this, $name))
 			return call_user_func_array( array($this, $name), $arguments );
+
+		// Check if the method is a "scope" method
+		// Read documentation about scope method
+		$scope = "scope" . Helper::studlyCase($name);
+
+		if(method_exists($this, $scope))
+		{
+			array_unshift($arguments, $this);
+
+			return call_user_func_array( array($this, $scope), $arguments );
+		}
+
 
 		if(is_null( $this->queryBuilder )) $this->queryBuilder = $this->newQuery();
 
