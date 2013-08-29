@@ -17,6 +17,10 @@ class Row {
 	// Getter
 	function __get($field)
 	{
+		// Are we trying to get a related model?
+		if(method_exists($this->model, $field))
+			return call_user_func(array($this->model, $field));
+
 		return $this->model->$field;
 	}
 
@@ -24,6 +28,12 @@ class Row {
 	function __set($field, $value)
 	{
 		$this->model->$field = $value;
+	}
+
+	function __call($name, $arguments)
+	{
+		if(method_exists($this->model, $name))
+			return call_user_func_array(array($this->model, $name), $arguments);
 	}
 
 	function save()

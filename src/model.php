@@ -59,11 +59,23 @@ class Model {
 
 	protected function find($id)
 	{
+		$args = func_get_args();
+		if(count($args) > 1)
+		{
+			$id = array();
+			foreach($args as $arg) $id[] = $arg;
+		}
+
 		$builder = $this->newQuery();
-		$builder->where( array($this->primary => $id) );
+
+		if(is_array($id))
+			$builder->where_in($this->primary, $id);
+
+		else
+			$builder->where( array($this->primary => $id) );
 
 		$result = new Result( $this, $builder );
-		return $result->first();
+		return is_array($id) ? $result->rows() : $result->first();
 	}
 
 	protected static function create($data)
@@ -154,6 +166,81 @@ class Model {
 		if( $this->exists ) $this->where($this->primary, $this->data[ $this->primary ]);
 
 		$this->queryBuilder->delete();
+	}
+
+	// ======================================
+	// Relationship Methods
+	// ======================================
+
+	function hasOne($model, $foreign_key = null)
+	{
+		if(!class_exists($model)) return false;
+
+		if(empty($foreign_key))
+			$foreign_key = strtolower(get_called_class()) . '_id';
+
+		$instance = new $model;
+		$instance->where($foreign_key, $this->data[ $this->primary ]);
+
+		return $instance->first();
+	}
+
+	function hasMany($model, $foreign_key = null)
+	{
+		if(!class_exists($model)) return false;
+
+		if(empty($foreign_key))
+			$foreign_key = strtolower(get_called_class()) . '_id';
+
+		$instance = new $model;
+		$instance->where($foreign_key, $this->data[ $this->primary ]);
+
+		return $instance->get();
+	}
+
+	function belongsTo($model, $foreign_key = null)
+	{
+		if(!class_exists($model)) return false;
+
+		if(empty($foreign_key))
+			$foreign_key = strtolower($model) . '_id';
+
+		$instance = new $model;
+
+		return $instance->find( $this->data[ $foreign_key ] );
+	}
+
+	function belongsToMany($model, $pivot_table = null, $foreign_key = null, $other_key = null)
+	{
+		if(empty($pivot_table))
+		{
+			$models = array( strtolower( get_called_class() ), strtolower( $model ) );
+			sort($models);
+
+			$pivot_table = strtolower( implode('_', $models) );
+		}
+
+		if(empty($foreign_key))
+			$foreign_key = strtolower(get_called_class()) . '_id';
+
+		if(empty($other_key))
+			$other_key = strtolower($model) . '_id';
+
+		$pivot_builder = new QueryBuilder($this->db_group, $pivot_table);
+		$pivot_query = $pivot_builder->where($foreign_key, $this->data[ $this->primary ])->get();
+
+		$other_id = array();
+
+		foreach($pivot_query->result_array() as $row)
+		{
+			$other_id[] = $row[ $other_key ];
+		}
+
+		if(empty($other_id)) return array();
+
+		$instance = new $model;
+
+		return $instance->find( $other_id );
 	}
 
 	// ======================================
