@@ -160,7 +160,7 @@ $active_users = User::active()->get();
 ```
 Note that the method name isn't using `scope` prefix.
 
-### Dynamyc Scopes
+### Dynamic Scopes
 Scopes can also accept parameters to be used in generating queries.
 ```php
 class User extends Elegant\Model {
@@ -175,4 +175,169 @@ class User extends Elegant\Model {
 
 // In your controller
 $search_results = User::search('John')->get();
+```
+
+## Relationship
+### One to One
+#### Defining One to One Relationship
+This the example how to define a one-to-one relationship between a `User` model with `Phone`. In this case, a `User` might have one `Phone`
+```php
+class User extends Elegant\Model {
+  protected $table = "user";
+  
+  function phone()
+  {
+    return $this->hasOne('Phone');
+  }
+}
+```
+
+The parameter to `hasOne` method is the name of the related model. Once the relationship set you can retrieve it in you controller this way:
+```php
+$user = User::find(1);
+$phone = $user->phone;
+// You can work with $phone object like the usual way
+
+// Returns its property
+echo $phone->brand;
+
+// Or updates it
+$phone->brand = "Samsung";
+$phone->save();
+```
+
+Note: the name of the method where you call the `hasOne` isn't have to be the same with the related model name. You can name it anything you want, just make sure it doesn't conflict with exisiting table field name.
+
+In the example above the foreign key in `phone` table is assumed to be `user_id` (lowercased related model's name with `_id` suffix). You can define custom key name as second parameter if your foreign key doesn't match this convention.
+```php
+$this->hasOne('Phone', 'custom field name');
+```
+
+#### Defining the Inverse Relationship
+You can also define the inverse of the relationship. For the example after you get a Phone object, you want to know who is the name owner. In the `Phone` model you have to call the `belongsTo` method.
+```php
+class Phone extends Elegant\Model {
+  protected $table = "phone";
+  
+  function owner()
+  {
+    return $this->belongsTo('User');
+  }
+}
+
+// In your controller:
+$phone = Phone::find(1);
+
+echo $phone->owner->name;
+```
+You can also define a custom foreign key as second parameter to `belongsTo` method.
+
+### One to Many
+#### Defining One to Many Relationship
+An example of one to many relationship is an article can has one or many comments. To define such relationship, you can do this:
+
+```php
+class Article extends Elegant\Model {
+  protected $table = "article";
+  
+  function comments()
+  {
+    return $this->hasMany('Comment');
+  }
+}
+```
+
+The difference between `hasOne` and `hasMany` is the `hasMany` will return an array of matched models, while `hasOne` will return only one model. So in your controller, you should use like this:
+```php
+$article = Article::find(1);
+
+foreach($article->comments() as $comment)
+{
+  echo $comment->text;
+}
+```
+
+#### Defining the Inverse Relationship
+As in one to one relationship you can define the inverse relationship between `Comment` and `Article` model.
+```php
+class Comment extends Elegant\Model {
+  protected $table = "comment";
+  
+  function article()
+  {
+    return $this->belongsTo('Article');
+  }
+}
+
+// In controllers
+$comment = Comment::find(1);
+
+return $comment->article->title;
+```
+Again, you can set a custom foreign key to `belongsTo` method as stated in the One to One section.
+
+### Many to Many
+#### Defining Many to Many Relationship
+Many to many relationship is the most complex relationship. It requires a pivot table to bridge the relation between two models.
+
+An example of this relationship is between an `Article` model with a `Tag` model. An article might has one or more tag while a tag can also be in one on more article.
+
+To define the relationship, you should do this:
+
+```php
+class Article extends Elegant\Model {
+  protected $table = "article";
+  
+  function tags()
+  {
+    return $this->belongsToMany('Tag');
+  }
+}
+```
+
+To retrieve the tags:
+```php
+$article = Article::find(1);
+
+foreach($article->tags as $tag)
+{
+  echo $tag->name;
+}
+```
+
+Or you can do vice-versa in `Tag` model:
+```php
+class Tag extends Elegant\Model {
+  protected $table = "tag";
+  
+  function articles()
+  {
+    return $this->belongsToMany('Article');
+  }
+}
+
+// In controllers
+$tag = Tag::find(1);
+foreach($tag->articles as $article)
+{
+  echo $article->title;
+}
+```
+
+#### Customizing Pivot Table
+By default Elegant will assume that the name of pivot table is the concatenated name of two models using underscore in alphabetical order. So if the models are `Article` and `Tag`, the default pivot table name is `article_tag`.
+
+If you want to use another name for the pivot table you can specify in second parameter of the `belongsToMany` method.
+```php
+// Use a custom pivot table name
+$this->belongsToMany('Tag', 'custom pivot name');
+```
+
+You can also customize the name of associated keys in the pivot. By default it uses the same convention as in One to One or One to Many. So for the example, in `article_tag` table, the fields will be `article_id` and `tag_id`.
+
+To customize the key name, you can pass third and/or fourth parameter. The third parameter is the associated key of current model, while the fourth is for the related model.
+
+Basicly, this is a `belongsToMany` will look like:
+```php
+$this->belongsToMany('Tag', 'article_tag', 'article_id', 'tag_id');
 ```
