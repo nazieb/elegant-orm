@@ -3,13 +3,6 @@ class Elegant {
 
 	function __construct()
 	{
-		require_once 'src/helper.php';
-		require_once 'src/row.php';
-		require_once 'src/result.php';
-		require_once 'src/querybuilder.php';
-		require_once 'src/model.php';
-		// require_once 'relationship.php';
-
 		$mod_path = APPPATH . 'models/';
 		if(file_exists($mod_path)) $this->_read_model_dir($mod_path);
 	}
@@ -43,3 +36,12 @@ class Elegant {
 	}
 
 }
+
+spl_autoload_register(function($class){
+	if(strpos($class, "Elegant\\") !== 0) return;
+
+	$classname = str_replace("Elegant\\", "", $class);
+
+	$path = 'src/' . strtolower( str_replace("\\", "/", $classname) ) . ".php";
+	require_once $path;
+});

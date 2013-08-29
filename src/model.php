@@ -19,13 +19,13 @@ class Model {
 
 	public $exists = false;
 
-	public $data = array();
+	protected $data = array();
 
 	function __construct(array $newData = array())
 	{
 		$this->ci =& get_instance();
 
-		$this->data = is_array($newData) ? $newData : array();
+		if(is_array($newData)) $this->setData( $newData );
 
 		// Reset variable
 		$this->exists = false;
@@ -123,16 +123,16 @@ class Model {
 				$this->exists = true;
 
 				if( $this->incrementing )
-					$this->data[ $this->primary ] = $builder->insert_id();
+					$this->setData( $this->primary, $builder->insert_id() );
 			}
 
 			return $return;
 		}
 		else
 		{
-			$where = array($this->primary => $this->data[ $this->primary ]);
+			$where = array($this->primary => $this->getData( $this->primary ));
 
-			return $builder->update($this->data, $where);
+			return $builder->update($this->getData(), $where);
 		}
 	}
 
@@ -165,7 +165,7 @@ class Model {
 			return $builder->delete();
 		}
 
-		if( $this->exists ) $this->where($this->primary, $this->data[ $this->primary ]);
+		if( $this->exists ) $this->where($this->primary, $this->getData( $this->primary ));
 
 		$this->queryBuilder->delete();
 	}
@@ -186,6 +186,28 @@ class Model {
 		return $this->get();
 	}
 
+	function getPrimaryKey()
+	{
+		return $this->primary;
+	}
+
+	function getData($field = null)
+	{
+		return !empty($field) ? $this->data[ $field ] : $this->data;
+	}
+
+	function setData($field, $value = null)
+	{
+		if(func_num_args() == 1 and is_array($field))
+		{
+			foreach($field as $key => $value)
+				$this->data[ $key ] = $value;
+		}
+
+		else
+			$this->data[ $field ] = $value;
+	}
+
 	function json()
 	{
 		$json = array();
@@ -199,49 +221,35 @@ class Model {
 	// Relationship Methods
 	// ======================================
 
-	function hasOne($model, $foreign_key = null)
+	function hasOne($related, $foreign_key = null)
 	{
-		if(!class_exists($model)) return false;
-
 		if(empty($foreign_key))
 			$foreign_key = strtolower(get_called_class()) . '_id';
 
-		$instance = new $model;
-		$instance->where($foreign_key, $this->data[ $this->primary ]);
-
-		return $instance->first();
+		return new Relations\HasOne($this, new $related, $foreign_key);
 	}
 
-	function hasMany($model, $foreign_key = null)
+	function hasMany($related, $foreign_key = null)
 	{
-		if(!class_exists($model)) return false;
-
 		if(empty($foreign_key))
 			$foreign_key = strtolower(get_called_class()) . '_id';
 
-		$instance = new $model;
-		$instance->where($foreign_key, $this->data[ $this->primary ]);
-
-		return $instance->get();
+		return new Relations\HasMany($this, new $related, $foreign_key);
 	}
 
-	function belongsTo($model, $foreign_key = null)
+	function belongsTo($related, $foreign_key = null)
 	{
-		if(!class_exists($model)) return false;
-
 		if(empty($foreign_key))
-			$foreign_key = strtolower($model) . '_id';
+			$foreign_key = strtolower($related) . '_id';
 
-		$instance = new $model;
-
-		return $instance->find( $this->data[ $foreign_key ] );
+		return new Relations\BelongsTo($this, new $related, $foreign_key);
 	}
 
-	function belongsToMany($model, $pivot_table = null, $foreign_key = null, $other_key = null)
+	function belongsToMany($related, $pivot_table = null, $foreign_key = null, $other_key = null)
 	{
 		if(empty($pivot_table))
 		{
-			$models = array( strtolower( get_called_class() ), strtolower( $model ) );
+			$models = array( strtolower( get_called_class() ), strtolower( $related ) );
 			sort($models);
 
 			$pivot_table = strtolower( implode('_', $models) );
@@ -251,23 +259,11 @@ class Model {
 			$foreign_key = strtolower(get_called_class()) . '_id';
 
 		if(empty($other_key))
-			$other_key = strtolower($model) . '_id';
+			$other_key = strtolower($related) . '_id';
 
 		$pivot_builder = new QueryBuilder($this->db_group, $pivot_table);
-		$pivot_query = $pivot_builder->where($foreign_key, $this->data[ $this->primary ])->get();
 
-		$other_id = array();
-
-		foreach($pivot_query->result_array() as $row)
-		{
-			$other_id[] = $row[ $other_key ];
-		}
-
-		if(empty($other_id)) return array();
-
-		$instance = new $model;
-
-		return $instance->find( $other_id );
+		return new Relations\BelongsToMany($this, new $related, $pivot_builder, $foreign_key, $other_key);
 	}
 
 	// ======================================
@@ -296,7 +292,7 @@ class Model {
 
 		if(is_callable( array($this->queryBuilder, $name) ))
 		{
-			$return = call_user_func_array( array($this->queryBuilder, $name), $arguments );
+			call_user_func_array( array($this->queryBuilder, $name), $arguments );
 			return $this;
 		}
 
@@ -322,6 +318,6 @@ class Model {
 
 	function __set($field, $value)
 	{
-		$this->data[ $field ] = $value;
+		$this->setData( $field, $value );
 	}
 }

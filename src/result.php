@@ -1,11 +1,16 @@
 <?php namespace Elegant;
 
+use Countable;
+use ArrayIterator;
+use IteratorAggregate;
 use Elegant\Row;
 
-class Result {
+class Result implements Countable, IteratorAggregate {
 
 	protected $model = null;
 	protected $query = null;
+
+	protected $rows;
 
 	function __construct(Model $model, QueryBuilder $query = null)
 	{
@@ -22,7 +27,7 @@ class Result {
 	function rows()
 	{
 		$class = get_class($this->model);
-		$rows = array();
+		$this->rows = array();
 
 		foreach($this->query->result_array() as $rowData)
 		{
@@ -30,15 +35,27 @@ class Result {
 			$model->exists = true;
 
 			$newRow = new Row($model, $rowData);
-			$rows[] = $newRow;
+			$this->rows[] = $newRow;
 		}
 
-		return $rows;
+		return $this;
 	}
 
+	// Alias for row();
 	function first()
 	{
 		return $this->row();
 	}
 
+	// Implements IteratorAggregate function
+	public function getIterator()
+	{
+		return new ArrayIterator($this->rows);
+	}
+
+	// Implements Countable function
+	public function count()
+	{
+		return count($this->rows);
+	}
 }

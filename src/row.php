@@ -11,7 +11,7 @@ class Row {
 		$this->model = $model;
 
 		$this->model->exists = true;
-		$this->model->data = $rowObject;
+		$this->model->setData( $rowObject );
 	}
 
 	// Getter
@@ -19,7 +19,12 @@ class Row {
 	{
 		// Are we trying to get a related model?
 		if(method_exists($this->model, $field))
-			return call_user_func(array($this->model, $field));
+		{
+			$relation = call_user_func(array($this->model, $field));
+
+			$data = $relation->getResults();
+			return $data;
+		}
 
 		return $this->model->$field;
 	}
@@ -40,7 +45,7 @@ class Row {
 	{
 		$json = array();
 
-		foreach($this->model->data as $field => $value)
+		foreach($this->model->getData() as $field => $value)
 			$json[$field] = $this->{$field};
 
 		return $json;
