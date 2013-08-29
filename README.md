@@ -160,7 +160,7 @@ $active_users = User::active()->get();
 ```
 Note that the method name isn't using `scope` prefix.
 
-### Dynamyc Scopes
+### Dynamic Scopes
 Scopes can also accept parameters to be used in generating queries.
 ```php
 class User extends Elegant\Model {
@@ -176,3 +176,105 @@ class User extends Elegant\Model {
 // In your controller
 $search_results = User::search('John')->get();
 ```
+
+## Relationship
+### One to One
+#### Defining One to One Relationship
+This the example how to define a one-to-one relationship between a `User` model with `Phone`. In this case, a `User` might have one `Phone`
+```php
+class User extends Elegant\Model {
+  protected $table = "user";
+  
+  function phone()
+  {
+    return $this->hasOne('Phone');
+  }
+}
+```
+
+The parameter to `hasOne` method is the name of the related model. Once the relationship set you can retrieve it in you controller this way:
+```php
+$user = User::find(1);
+$phone = $user->phone;
+// You can work with $phone object like the usual way
+
+// Returns its property
+echo $phone->brand;
+
+// Or updates it
+$phone->brand = "Samsung";
+$phone->save();
+```
+
+Note: the name of the method where you call the `hasOne` isn't have to be the same with the related model name. You can name it anything you want, just make sure it doesn't conflict with exisiting table field name.
+
+In the example above the foreign key in `phone` table is assumed to be `user_id` (lowercased related model's name with `_id` suffix). You can define custom key name as second parameter if your foreign key doesn't match this convention.
+```php
+$this->hasOne('Phone', 'custom field name');
+```
+
+#### Defining the Inverse Relationship
+You can also define the inverse of the relationship. For the example after you get a Phone object, you want to know who is the name owner. In the `Phone` model you have to call the `belongsTo` method.
+```php
+class Phone extends Elegant\Model {
+  protected $table = "phone";
+  
+  function owner()
+  {
+    return $this->belongsTo('User');
+  }
+}
+
+// In your controller:
+$phone = Phone::find(1);
+
+echo $phone->owner->name;
+```
+You can also define a custom foreign key as second parameter to `belongsTo` method.
+
+### One to Many
+#### Defining One to Many Relationship
+An example of one to many relationship is an article can has one or many comments. To define such relationship, you can do this:
+
+```php
+class Article extends Elegant\Model {
+  protected $table = "article";
+  
+  function comments()
+  {
+    return $this->hasMany('Comment');
+  }
+}
+```
+
+The difference between `hasOne` and `hasMany` is the `hasMany` will return an array of matched models, while `hasOne` will return only one model. So in your controller, you should use like this:
+```php
+$article = Article::find(1);
+
+foreach($article->comments() as $comment)
+{
+  echo $comment->text;
+}
+```
+
+#### Defining the Inverse Relationship
+As in one to one relationship you can define the inverse relationship between `Comment` and `Article` model.
+```php
+class Comment extends Elegant\Model {
+  protected $table = "comment";
+  
+  function article()
+  {
+    return $this->belongsTo('Article');
+  }
+}
+
+// In controllers
+$comment = Comment::find(1);
+
+return $comment->article->title;
+```
+Again, you can set a custom foreign key to `belongsTo` method as stated in the One to One section.
+
+### Many to Many
+-- to be continued
