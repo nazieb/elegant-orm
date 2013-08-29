@@ -277,4 +277,67 @@ return $comment->article->title;
 Again, you can set a custom foreign key to `belongsTo` method as stated in the One to One section.
 
 ### Many to Many
--- to be continued
+#### Defining Many to Many Relationship
+Many to many relationship is the most complex relationship. It requires a pivot table to bridge the relation between two models.
+
+An example of this relationship is between an `Article` model with a `Tag` model. An article might has one or more tag while a tag can also be in one on more article.
+
+To define the relationship, you should do this:
+
+```php
+class Article extends Elegant\Model {
+  protected $table = "article";
+  
+  function tags()
+  {
+    return $this->belongsToMany('Tag');
+  }
+}
+```
+
+To retrieve the tags:
+```php
+$article = Article::find(1);
+
+foreach($article->tags as $tag)
+{
+  echo $tag->name;
+}
+```
+
+Or you can do vice-versa in `Tag` model:
+```php
+class Tag extends Elegant\Model {
+  protected $table = "tag";
+  
+  function articles()
+  {
+    return $this->belongsToMany('Article');
+  }
+}
+
+// In controllers
+$tag = Tag::find(1);
+foreach($tag->articles as $article)
+{
+  echo $article->title;
+}
+```
+
+#### Customizing Pivot Table
+By default Elegant will assume that the name of pivot table is the concatenated name of two models using underscore in alphabetical order. So if the models are `Article` and `Tag`, the default pivot table name is `article_tag`.
+
+If you want to use another name for the pivot table you can specify in second parameter of the `belongsToMany` method.
+```php
+// Use a custom pivot table name
+$this->belongsToMany('Tag', 'custom pivot name');
+```
+
+You can also customize the name of associated keys in the pivot. By default it uses the same convention as in One to One or One to Many. So for the example, in `article_tag` table, the fields will be `article_id` and `tag_id`.
+
+To customize the key name, you can pass third and/or fourth parameter. The third parameter is the associated key of current model, while the fourth is for the related model.
+
+Basicly, this is a `belongsToMany` will look like:
+```php
+$this->belongsToMany('Tag', 'article_tag', 'article_id', 'tag_id');
+```
