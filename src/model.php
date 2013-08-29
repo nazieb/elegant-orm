@@ -13,6 +13,8 @@ class Model {
 	protected $primary = "id";
 	protected $incrementing = true;
 
+	protected $per_page = 20;
+
 	protected $queryBuilder = null;
 
 	public $exists = false;
@@ -168,6 +170,31 @@ class Model {
 		$this->queryBuilder->delete();
 	}
 
+	protected function for_page($page, $per_page = null)
+	{
+		$page = intval($page);
+		if(empty($page)) return false;
+
+		if(empty($per_page)) $per_page = $this->per_page;
+
+		$offset = ($page - 1) * $per_page;
+
+		$builder = $this->queryBuilder ?: $this->newQuery();
+
+		$builder->limit($per_page, $offset);
+
+		return $this->get();
+	}
+
+	function json()
+	{
+		$json = array();
+
+		foreach($this->get() as $row) $json[] = $row->__toString();
+
+		return json_encode($json);
+	}
+
 	// ======================================
 	// Relationship Methods
 	// ======================================
@@ -287,7 +314,6 @@ class Model {
 	{
 		if(!isset( $this->data[ $field ] )) return null;
 		$value = $this->data[ $field ];
-		return $value;
 
 		$accessor = "getAttr". Helper::camelCase( $field );
 

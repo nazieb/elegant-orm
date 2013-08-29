@@ -36,6 +36,16 @@ class Row {
 			return call_user_func_array(array($this->model, $name), $arguments);
 	}
 
+	function __toString()
+	{
+		$json = array();
+
+		foreach($this->model->data as $field => $value)
+			$json[$field] = $this->{$field};
+
+		return $json;
+	}
+
 	function save()
 	{
 		return $this->model->save();
