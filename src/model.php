@@ -19,8 +19,6 @@ class Model {
 
 	public $exists = false;
 
-	protected $debug = false;
-
 	protected $data = array();
 
 	function __construct(array $newData = array())
@@ -32,22 +30,11 @@ class Model {
 		// Reset variable
 		$this->exists = false;
 		$this->queryBuilder = null;
-
-		if(defined('ELEGANT_DEBUG') and ELEGANT_DEBUG === true)
-			$this->debug = true;
 	}
 
 	protected function newQuery()
 	{
-		$builder = new QueryBuilder($this->db_group, $this->table);
-
-		if($this->debug)
-		{
-			$property_name = 'elegant_db_'.rand();
-			$this->ci->{$property_name} = $builder->getConnection();
-		}
-
-		return $builder;
+		return new QueryBuilder($this->db_group, $this->table);
 	}
 
 	protected function all()

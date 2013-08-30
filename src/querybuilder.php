@@ -12,6 +12,12 @@ class QueryBuilder {
 
 		$this->table = $table;
 		$this->db_conn->from( $this->table );
+
+		if(defined('ELEGANT_DEBUG') and ELEGANT_DEBUG === true)
+		{
+			$property_name = 'elegant_db_'.rand();
+			$ci->{$property_name} = $this->db_conn;
+		}
 	}
 
 	function __call($name, $arguments)
@@ -19,11 +25,6 @@ class QueryBuilder {
 		if(!method_exists($this->db_conn, $name)) return show_error('Unknown function '.$name, 500);
 
 		return call_user_func_array( array($this->db_conn, $name), $arguments );
-	}
-
-	function getConnection()
-	{
-		return $this->db_conn;
 	}
 
 	function insert($data)
