@@ -12,8 +12,6 @@ abstract class Relation implements Countable, IteratorAggregate {
 	protected $parent;
 	protected $related;
 
-	protected $related_items = null;
-
 	function __construct(Model $parent, Model $related)
 	{
 		$this->parent = $parent;
@@ -22,20 +20,16 @@ abstract class Relation implements Countable, IteratorAggregate {
 
 	abstract public function getResults();
 
-	// Implements IteratorAggregate function
+	// Implements IteratorAggregate function so the result can be looped without needs to call get() first.
 	public function getIterator()
 	{
-		if(empty($this->related_items)) $this->related_items = $this->related->get();
-
-		return $this->related_items;
+		return $this->getResults();
 	}
 
 	// Implements Countable function
 	public function count()
 	{
-		if(empty($this->related_items)) $this->related_items = $this->related->get();
-
-		return count($this->related_items);
+		return count( $this->getResults() );
 	}
 
 	function __call($name, $param)
