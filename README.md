@@ -4,7 +4,7 @@ ORM for CodeIgniter based on Laravel's Eloquent. The Elegant ORM brings the beau
 
 ## Installation
 
-- Download the zipball
+- Download the zipball of the latest release at https://github.com/nazieb/elegant-orm/releases
 - Extract to your `application/libraries` directory
 - In your `config/autoload.php` file, add `elegant-orm/elegant` to `$autoload['libraries']`. So it will look like this:
 
