@@ -1,446 +1,412 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Elegant-orm by nazieb</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>elegant-orm</title>
+    
+    <link rel="stylesheet" type="text/css" href="http://documentup.com/stylesheets/screen.css">
+    
+    
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    
+
+    <!-- Typekit -->
+    
+      <script type="text/javascript">
+        (function() {
+          var config = {
+            kitId: 'hjp0pft',
+            scriptTimeout: 3000
+          };
+          var h=document.getElementsByTagName("html")[0];h.className+=" wf-loading";var t=setTimeout(function(){h.className=h.className.replace(/( |^)wf-loading( |$)/g,"");h.className+=" wf-inactive"},config.scriptTimeout);var tk=document.createElement("script");tk.src='//use.typekit.net/'+config.kitId+'.js';tk.type="text/javascript";tk.async="true";tk.onload=tk.onreadystatechange=function(){var a=this.readyState;if(a&&a!="complete"&&a!="loaded")return;clearTimeout(t);try{Typekit.load(config)}catch(b){}};var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(tk,s)
+        })();
+      </script>
+    
   </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Elegant-orm</h1>
-        <p>ORM for CodeIgniter based on Laravel's Eloquent ORM</p>
-
-        <p class="view"><a href="https://github.com/nazieb/elegant-orm">View the Project on GitHub <small>nazieb/elegant-orm</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/nazieb/elegant-orm/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/nazieb/elegant-orm/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/nazieb/elegant-orm">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
-<a name="elegant-orm-beta" class="anchor" href="#elegant-orm-beta"><span class="octicon octicon-link"></span></a>Elegant ORM [BETA]</h1>
-
-<p>ORM for CodeIgniter based on Laravel's Eloquent. The Elegant ORM brings the beauty and simplicity of working with Eloquent ORM in Laravel to CodeIgniter framework.</p>
-
-<h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
-
+  <body><div id="container">
+  <div id="nav">
+    
+      <div id="header">
+        <a href="#" id="logo">elegant-orm</a>
+      </div>
+    
+    <ul id="sections">
+      
+        <li>
+          <a href="#installation">Installation</a>
+          
+        </li>
+      
+        <li>
+          <a href="#usage">Usage</a>
+          
+            <ul>
+              
+                <li>
+                  <a href="#usage/defining-models">Defining Models</a>
+                </li>
+              
+                <li>
+                  <a href="#usage/model-properties">Model properties</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+        <li>
+          <a href="#querying">Querying</a>
+          
+            <ul>
+              
+                <li>
+                  <a href="#querying/retrieve-all-models">Retrieve all models</a>
+                </li>
+              
+                <li>
+                  <a href="#querying/find-a-model-by-primary-key">Find a model by primary key</a>
+                </li>
+              
+                <li>
+                  <a href="#querying/custom-query">Custom Query</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+        <li>
+          <a href="#create-update-delete">Create, Update &amp; Delete</a>
+          
+            <ul>
+              
+                <li>
+                  <a href="#create-update-delete/creating-a-new-model">Creating A New Model</a>
+                </li>
+              
+                <li>
+                  <a href="#create-update-delete/updating-models">Updating Models</a>
+                </li>
+              
+                <li>
+                  <a href="#create-update-delete/deleting-models">Deleting Models</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+        <li>
+          <a href="#query-scopes">Query Scopes</a>
+          
+            <ul>
+              
+                <li>
+                  <a href="#query-scopes/defining-a-scope">Defining A Scope</a>
+                </li>
+              
+                <li>
+                  <a href="#query-scopes/utilizing-scopes">Utilizing Scopes</a>
+                </li>
+              
+                <li>
+                  <a href="#query-scopes/dynamic-scopes">Dynamic Scopes</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+        <li>
+          <a href="#relationship">Relationship</a>
+          
+            <ul>
+              
+                <li>
+                  <a href="#relationship/one-to-one">One to One</a>
+                </li>
+              
+                <li>
+                  <a href="#relationship/one-to-many">One to Many</a>
+                </li>
+              
+                <li>
+                  <a href="#relationship/many-to-many">Many to Many</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+    </ul>
+    
+      <div class="extra" id="github">
+        <a href="https://github.com/nazieb/elegant-orm">Source on GitHub</a>
+      </div>
+      
+        <div class="extra" id="github-issues">
+          <a href="https://github.com/nazieb/elegant-orm/issues">Issues</a>
+        </div>
+      
+      
+    
+    
+  </div>
+  <div id="content">
+    
+      <a href="https://github.com/nazieb/elegant-orm" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+    
+    <h1>Elegant ORM [BETA]</h1>
+<p>ORM for CodeIgniter based on Laravel&#39;s Eloquent. The Elegant ORM brings the beauty and simplicity of working with Eloquent ORM in Laravel to CodeIgniter framework.</p>
+<h2 id='installation'>Installation</h2 id='installation'>
 <ul>
 <li>Download the zipball</li>
 <li>Extract to your <code>application/libraries</code> directory</li>
-<li>
-<p>In your <code>config/autoload.php</code> file, add <code>elegant-orm/elegant</code> to <code>$autoload['libraries']</code>. So it will look like this:</p>
-
-<div class="highlight"><pre><span class="nv">$autoload</span><span class="p">[</span><span class="s1">'libraries'</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'elegant-orm/elegant'</span><span class="p">);</span>
-</pre></div>
+<li><p>In your <code>config/autoload.php</code> file, add <code>elegant-orm/elegant</code> to <code>$autoload[&#39;libraries&#39;]</code>. So it will look like this:</p>
+<pre><code class="lang-php"><span class="variable">$autoload</span>[<span class="string">'libraries'</span>] = <span class="keyword">array</span>(<span class="string">'elegant-orm/elegant'</span>);</code></pre>
 </li>
-</ul><h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
-
-<h3>
-<a name="defining-models" class="anchor" href="#defining-models"><span class="octicon octicon-link"></span></a>Defining Models</h3>
-
-<p>Models in Elegant ORM (as in other ORMs) represent a single table to work with. To define a model, it's about the same with non-ORM CodeIgniter, but instead of extending <code>CI_Model</code>, the ORM model should extends <code>Elegant\Model</code> class.</p>
-
+</ul>
+<h2 id='usage'>Usage</h2 id='usage'>
+<h3 id='usage/defining-models'>Defining Models</h3 id='usage/defining-models'>
+<p>Models in Elegant ORM (as in other ORMs) represent a single table to work with. To define a model, it&#39;s about the same with non-ORM CodeIgniter, but instead of extending <code>CI_Model</code>, the ORM model should extends <code>Elegant\Model</code> class.</p>
 <p><em>Example:</em> Model for table user, located in <code>models/user.php</code></p>
-
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span> <span class="k">extends</span> <span class="nx">Elegant\Model</span> <span class="p">{</span>
-  <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s2">"user"</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
+<pre><code class="lang-php"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Elegant</span>\<span class="title">Model</span> {</span>
+  <span class="keyword">protected</span> <span class="variable">$table</span> = <span class="string">"user"</span>;
+}</code></pre>
 <p>The <code>$table</code> property is used to tell which table the model will work with. There are also several properties to customize the model configuration.</p>
-
-<h3>
-<a name="model-properties" class="anchor" href="#model-properties"><span class="octicon octicon-link"></span></a>Model properties</h3>
-
+<h3 id='usage/model-properties'>Model properties</h3 id='usage/model-properties'>
 <p>Here are some properties you can use to customize the model</p>
-
 <ul>
-<li>
-<code>$table</code> : to define the table name. This property is mandatory to set</li>
-<li>
-<code>$db_group</code> : to define which database group the model will connect. The groups can be found in <code>config/database.php</code>. By default it uses "default" group</li>
-<li>
-<code>$primary</code> : to define the column name of the table's primary key. Default is "id". If your PK has other name than "id" you should change this</li>
-<li>
-<code>$incrementing</code> : to define whether your PK is auto-increment. Default value is <code>true</code>. If you'd like to generate your Primary Key value by custom function, set this to <code>false</code>
-</li>
-</ul><h2>
-<a name="querying" class="anchor" href="#querying"><span class="octicon octicon-link"></span></a>Querying</h2>
-
-<h3>
-<a name="retrieve-all-models" class="anchor" href="#retrieve-all-models"><span class="octicon octicon-link"></span></a>Retrieve all models</h3>
-
-<div class="highlight"><pre><span class="nv">$users</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">all</span><span class="p">();</span>
-<span class="k">foreach</span><span class="p">(</span><span class="nv">$users</span> <span class="k">as</span> <span class="nv">$user</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="k">echo</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
-<h3>
-<a name="find-a-model-by-primary-key" class="anchor" href="#find-a-model-by-primary-key"><span class="octicon octicon-link"></span></a>Find a model by primary key</h3>
-
-<div class="highlight"><pre><span class="nv">$user</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="k">echo</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
-</pre></div>
-
+<li><code>$table</code> : to define the table name. This property is mandatory to set</li>
+<li><code>$db_group</code> : to define which database group the model will connect. The groups can be found in <code>config/database.php</code>. By default it uses &quot;default&quot; group</li>
+<li><code>$primary</code> : to define the column name of the table&#39;s primary key. Default is &quot;id&quot;. If your PK has other name than &quot;id&quot; you should change this</li>
+<li><code>$incrementing</code> : to define whether your PK is auto-increment. Default value is <code>true</code>. If you&#39;d like to generate your Primary Key value by custom function, set this to <code>false</code></li>
+</ul>
+<h2 id='querying'>Querying</h2 id='querying'>
+<h3 id='querying/retrieve-all-models'>Retrieve all models</h3 id='querying/retrieve-all-models'>
+<pre><code class="lang-php"><span class="variable">$users</span> = User::all();
+<span class="keyword">foreach</span>(<span class="variable">$users</span> <span class="keyword">as</span> <span class="variable">$user</span>)
+{
+  <span class="keyword">echo</span> <span class="variable">$user</span>-&gt;name;
+}</code></pre>
+<h3 id='querying/find-a-model-by-primary-key'>Find a model by primary key</h3 id='querying/find-a-model-by-primary-key'>
+<pre><code class="lang-php"><span class="variable">$user</span> = User::find(<span class="number">1</span>);
+<span class="keyword">echo</span> <span class="variable">$user</span>-&gt;name;</code></pre>
 <p>You can also pass multiple IDs or an array to get multiple records.</p>
-
-<div class="highlight"><pre><span class="nv">$users</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-<span class="c1">// or</span>
-<span class="nv">$users</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">find</span><span class="p">(</span> <span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">);</span>
-</pre></div>
-
-<h3>
-<a name="custom-query" class="anchor" href="#custom-query"><span class="octicon octicon-link"></span></a>Custom Query</h3>
-
+<pre><code class="lang-php"><span class="variable">$users</span> = User::find(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);
+<span class="comment">// or</span>
+<span class="variable">$users</span> = User::find( <span class="keyword">array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) );</code></pre>
+<h3 id='querying/custom-query'>Custom Query</h3 id='querying/custom-query'>
 <p>You can still use Code Igniter Active Record to generate a custom query.</p>
+<pre><code class="lang-php"><span class="variable">$users</span> = User::where(<span class="string">'status'</span>, <span class="number">1</span>)-&gt;get();
 
-<div class="highlight"><pre><span class="nv">$users</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">where</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-
-<span class="k">foreach</span><span class="p">(</span><span class="nv">$users</span> <span class="k">as</span> <span class="nv">$user</span><span class="p">)</span> <span class="k">echo</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
-</pre></div>
-
+<span class="keyword">foreach</span>(<span class="variable">$users</span> <span class="keyword">as</span> <span class="variable">$user</span>) <span class="keyword">echo</span> <span class="variable">$user</span>-&gt;name;</code></pre>
 <p>Or if you only want to retrieve the first record, you can use <code>first()</code> method</p>
+<pre><code class="lang-php"><span class="variable">$user</span> = User::where(<span class="string">'status'</span>, <span class="number">1</span>)-&gt;first();
+<span class="keyword">echo</span> <span class="variable">$user</span>-&gt;name;</code></pre>
+<h2 id='create-update-delete'>Create, Update &amp; Delete</h2 id='create-update-delete'>
+<h3 id='create-update-delete/creating-a-new-model'>Creating A New Model</h3 id='create-update-delete/creating-a-new-model'>
+<pre><code class="lang-php"><span class="variable">$user</span> =  <span class="keyword">new</span> User;
 
-<div class="highlight"><pre><span class="nv">$user</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">where</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">first</span><span class="p">();</span>
-<span class="k">echo</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
-</pre></div>
+<span class="variable">$user</span>-&gt;name = <span class="string">'John Doe'</span>;
+<span class="variable">$user</span>-&gt;email = <span class="string">'dummy@example.com'</span>;
 
-<h2>
-<a name="create-update--delete" class="anchor" href="#create-update--delete"><span class="octicon octicon-link"></span></a>Create, Update &amp; Delete</h2>
-
-<h3>
-<a name="creating-a-new-model" class="anchor" href="#creating-a-new-model"><span class="octicon octicon-link"></span></a>Creating A New Model</h3>
-
-<div class="highlight"><pre><span class="nv">$user</span> <span class="o">=</span>  <span class="k">new</span> <span class="nx">User</span><span class="p">;</span>
-
-<span class="nv">$user</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="s1">'John Doe'</span><span class="p">;</span>
-<span class="nv">$user</span><span class="o">-&gt;</span><span class="na">email</span> <span class="o">=</span> <span class="s1">'dummy@example.com'</span><span class="p">;</span>
-
-<span class="nv">$user</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
-</pre></div>
-
-<p>After saving the record, if your model uses auto increment primary key, the generated insert id will be set to the object. So if you use example above, you can show the new user's ID right away</p>
-
-<div class="highlight"><pre><span class="k">echo</span> <span class="s2">"New User ID: "</span> <span class="o">.</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">;</span>
-</pre></div>
-
-<p>Note that the property isn't always <code>id</code>. It depends on the <code>primary</code> property you've set before.</p>
-
+<span class="variable">$user</span>-&gt;save();</code></pre>
+<p>After saving the record, if your model uses auto increment primary key, the generated insert id will be set to the object. So if you use example above, you can show the new user&#39;s ID right away</p>
+<pre><code class="lang-php"><span class="keyword">echo</span> <span class="string">"New User ID: "</span> . <span class="variable">$user</span>-&gt;id;</code></pre>
+<p>Note that the property isn&#39;t always <code>id</code>. It depends on the <code>primary</code> property you&#39;ve set before.</p>
 <p>Alternatively, you can use <code>create</code> method to create new models.</p>
+<pre><code class="lang-php"><span class="variable">$user</span> = User::create( <span class="keyword">array</span>(<span class="string">'name'</span> =&gt; <span class="string">'John Doe'</span>, <span class="string">'email'</span> =&gt; <span class="string">'dummy@example.com'</span>) );
 
-<div class="highlight"><pre><span class="nv">$user</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">create</span><span class="p">(</span> <span class="k">array</span><span class="p">(</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'John Doe'</span><span class="p">,</span> <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'dummy@example.com'</span><span class="p">)</span> <span class="p">);</span>
+<span class="comment">// create() method will return a newly created model or false if inserting fails</span>
+<span class="keyword">echo</span> <span class="variable">$user</span>-&gt;id;</code></pre>
+<h3 id='create-update-delete/updating-models'>Updating Models</h3 id='create-update-delete/updating-models'>
+<h4>Updating Retrieved Model</h4>
+<pre><code class="lang-php"><span class="variable">$user</span> = User::find(<span class="number">1</span>);
 
-<span class="c1">// create() method will return a newly created model or false if inserting fails</span>
-<span class="k">echo</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">;</span>
-</pre></div>
-
-<h3>
-<a name="updating-models" class="anchor" href="#updating-models"><span class="octicon octicon-link"></span></a>Updating Models</h3>
-
-<h4>
-<a name="updating-retrieved-model" class="anchor" href="#updating-retrieved-model"><span class="octicon octicon-link"></span></a>Updating Retrieved Model</h4>
-
-<div class="highlight"><pre><span class="nv">$user</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-
-<span class="nv">$user</span><span class="o">-&gt;</span><span class="na">name</span> <span class="o">=</span> <span class="s1">'Jack Doe'</span><span class="p">;</span>
-<span class="nv">$user</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
-</pre></div>
-
-<h4>
-<a name="mass-updating" class="anchor" href="#mass-updating"><span class="octicon octicon-link"></span></a>Mass Updating</h4>
-
+<span class="variable">$user</span>-&gt;name = <span class="string">'Jack Doe'</span>;
+<span class="variable">$user</span>-&gt;save();</code></pre>
+<h4>Mass Updating</h4>
 <p>You still can use CodeIgniter Active Record to generate a custom query before updating.</p>
-
-<div class="highlight"><pre><span class="nx">User</span><span class="o">::</span><span class="na">where</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">update</span><span class="p">(</span> <span class="k">array</span><span class="p">(</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Jane Doe'</span><span class="p">)</span> <span class="p">);</span>
-</pre></div>
-
+<pre><code class="lang-php">User::where(<span class="string">'status'</span>, <span class="number">1</span>)-&gt;update( <span class="keyword">array</span>(<span class="string">'name'</span> =&gt; <span class="string">'Jane Doe'</span>) );</code></pre>
 <p>Or alternatively you can call <code>update</code> method right away.</p>
-
-<div class="highlight"><pre><span class="nx">User</span><span class="o">::</span><span class="na">update</span><span class="p">(</span> <span class="k">array</span><span class="p">(</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'Jane Doe'</span><span class="p">),</span> <span class="k">array</span><span class="p">(</span><span class="s1">'id'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">);</span>
-<span class="c1">// The first parameter is the new data, and the second is the "where" condition</span>
-</pre></div>
-
-<h3>
-<a name="deleting-models" class="anchor" href="#deleting-models"><span class="octicon octicon-link"></span></a>Deleting Models</h3>
-
+<pre><code class="lang-php">User::update( <span class="keyword">array</span>(<span class="string">'name'</span> =&gt; <span class="string">'Jane Doe'</span>), <span class="keyword">array</span>(<span class="string">'id'</span> =&gt; <span class="number">1</span>) );
+<span class="comment">// The first parameter is the new data, and the second is the "where" condition</span></code></pre>
+<h3 id='create-update-delete/deleting-models'>Deleting Models</h3 id='create-update-delete/deleting-models'>
 <p>There are several ways to delete model</p>
+<pre><code class="lang-php"><span class="comment">// Delete retrieved model</span>
+<span class="variable">$user</span> = User::find(<span class="number">1</span>);
+<span class="variable">$user</span>-&gt;delete();
 
-<div class="highlight"><pre><span class="c1">// Delete retrieved model</span>
-<span class="nv">$user</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="nv">$user</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
+<span class="comment">// Delete a single model by its primary key</span>
+User::delete(<span class="number">1</span>);
 
-<span class="c1">// Delete a single model by its primary key</span>
-<span class="nx">User</span><span class="o">::</span><span class="na">delete</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="comment">// Delete multiple models by their primary keys</span>
+User::delete(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);
+<span class="comment">//or</span>
+User::delete( <span class="keyword">array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) );
 
-<span class="c1">// Delete multiple models by their primary keys</span>
-<span class="nx">User</span><span class="o">::</span><span class="na">delete</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-<span class="c1">//or</span>
-<span class="nx">User</span><span class="o">::</span><span class="na">delete</span><span class="p">(</span> <span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">);</span>
-
-<span class="c1">// Use Active Record</span>
-<span class="nx">User</span><span class="o">::</span><span class="na">where</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">delete</span><span class="p">();</span>
-</pre></div>
-
-<h2>
-<a name="query-scopes" class="anchor" href="#query-scopes"><span class="octicon octicon-link"></span></a>Query Scopes</h2>
-
+<span class="comment">// Use Active Record</span>
+User::where(<span class="string">'status'</span>, <span class="number">1</span>)-&gt;delete();</code></pre>
+<h2 id='query-scopes'>Query Scopes</h2 id='query-scopes'>
 <p>Scopes is a custom function you can create in your models to generate custom queries</p>
+<h3 id='query-scopes/defining-a-scope'>Defining A Scope</h3 id='query-scopes/defining-a-scope'>
+<p>Some conventions:
+- Scope method name must be in camel case
+- Scope method name must be start with <code>scope</code>
+- At least one parameter is required. This first parameter is a <code>QueryBuilder</code> which you can use to call Active Record methods</p>
+<pre><code class="lang-php"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Elegant</span>\<span class="title">Model</span> {</span>
+  <span class="keyword">protected</span> <span class="variable">$table</span> = <span class="string">"user"</span>;
 
-<h3>
-<a name="defining-a-scope" class="anchor" href="#defining-a-scope"><span class="octicon octicon-link"></span></a>Defining A Scope</h3>
-
-<p>Some conventions:</p>
-
-<ul>
-<li>Scope method name must be in camel case</li>
-<li>Scope method name must be start with <code>scope</code>
-</li>
-<li>At least one parameter is required. This first parameter is a <code>QueryBuilder</code> which you can use to call Active Record methods</li>
-</ul><div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span> <span class="k">extends</span> <span class="nx">Elegant\Model</span> <span class="p">{</span>
-  <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s2">"user"</span><span class="p">;</span>
-
-  <span class="k">function</span> <span class="nf">scopeActive</span><span class="p">(</span><span class="nv">$query</span><span class="p">)</span>
-  <span class="p">{</span>
-    <span class="k">return</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">order_by</span><span class="p">(</span><span class="s1">'name'</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-
-<h3>
-<a name="utilizing-scopes" class="anchor" href="#utilizing-scopes"><span class="octicon octicon-link"></span></a>Utilizing Scopes</h3>
-
+  <span class="function"><span class="keyword">function</span> <span class="title">scopeActive</span><span class="params">(<span class="variable">$query</span>)</span>
+  {</span>
+    <span class="keyword">return</span> <span class="variable">$query</span>-&gt;where(<span class="string">'status'</span>, <span class="number">1</span>)-&gt;order_by(<span class="string">'name'</span>);
+  }
+}</code></pre>
+<h3 id='query-scopes/utilizing-scopes'>Utilizing Scopes</h3 id='query-scopes/utilizing-scopes'>
 <p>Using example above, you can do this in your controller</p>
-
-<div class="highlight"><pre><span class="nv">$active_users</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">active</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-</pre></div>
-
-<p>Note that the method name isn't using <code>scope</code> prefix.</p>
-
-<h3>
-<a name="dynamic-scopes" class="anchor" href="#dynamic-scopes"><span class="octicon octicon-link"></span></a>Dynamic Scopes</h3>
-
+<pre><code class="lang-php"><span class="variable">$active_users</span> = User::active()-&gt;get();</code></pre>
+<p>Note that the method name isn&#39;t using <code>scope</code> prefix.</p>
+<h3 id='query-scopes/dynamic-scopes'>Dynamic Scopes</h3 id='query-scopes/dynamic-scopes'>
 <p>Scopes can also accept parameters to be used in generating queries.</p>
+<pre><code class="lang-php"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Elegant</span>\<span class="title">Model</span> {</span>
+  <span class="keyword">protected</span> <span class="variable">$table</span> = <span class="string">"user"</span>;
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span> <span class="k">extends</span> <span class="nx">Elegant\Model</span> <span class="p">{</span>
-  <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s2">"user"</span><span class="p">;</span>
+  <span class="comment">// Search an active user by name</span>
+  <span class="function"><span class="keyword">function</span> <span class="title">scopeSearch</span><span class="params">(<span class="variable">$query</span>, <span class="variable">$keyword</span>)</span>
+  {</span>
+    <span class="keyword">return</span> <span class="variable">$query</span>-&gt;like(<span class="string">'name'</span>, <span class="variable">$keyword</span>)-&gt;where(<span class="string">'status'</span>, <span class="number">1</span>);
+  }
+}
 
-  <span class="c1">// Search an active user by name</span>
-  <span class="k">function</span> <span class="nf">scopeSearch</span><span class="p">(</span><span class="nv">$query</span><span class="p">,</span> <span class="nv">$keyword</span><span class="p">)</span>
-  <span class="p">{</span>
-    <span class="k">return</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">like</span><span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="nv">$keyword</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="c1">// In your controller</span>
-<span class="nv">$search_results</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">search</span><span class="p">(</span><span class="s1">'John'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
-</pre></div>
-
-<h2>
-<a name="relationship" class="anchor" href="#relationship"><span class="octicon octicon-link"></span></a>Relationship</h2>
-
-<h3>
-<a name="one-to-one" class="anchor" href="#one-to-one"><span class="octicon octicon-link"></span></a>One to One</h3>
-
-<h4>
-<a name="defining-one-to-one-relationship" class="anchor" href="#defining-one-to-one-relationship"><span class="octicon octicon-link"></span></a>Defining One to One Relationship</h4>
-
+<span class="comment">// In your controller</span>
+<span class="variable">$search_results</span> = User::search(<span class="string">'John'</span>)-&gt;get();</code></pre>
+<h2 id='relationship'>Relationship</h2 id='relationship'>
+<h3 id='relationship/one-to-one'>One to One</h3 id='relationship/one-to-one'>
+<h4>Defining One to One Relationship</h4>
 <p>This the example how to define a one-to-one relationship between a <code>User</code> model with <code>Phone</code>. In this case, a <code>User</code> might have one <code>Phone</code></p>
+<pre><code class="lang-php"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Elegant</span>\<span class="title">Model</span> {</span>
+  <span class="keyword">protected</span> <span class="variable">$table</span> = <span class="string">"user"</span>;
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span> <span class="k">extends</span> <span class="nx">Elegant\Model</span> <span class="p">{</span>
-  <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s2">"user"</span><span class="p">;</span>
-
-  <span class="k">function</span> <span class="nf">phone</span><span class="p">()</span>
-  <span class="p">{</span>
-    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hasOne</span><span class="p">(</span><span class="s1">'Phone'</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-
+  <span class="function"><span class="keyword">function</span> <span class="title">phone</span><span class="params">()</span>
+  {</span>
+    <span class="keyword">return</span> <span class="variable">$this</span>-&gt;hasOne(<span class="string">'Phone'</span>);
+  }
+}</code></pre>
 <p>The parameter to <code>hasOne</code> method is the name of the related model. Once the relationship set you can retrieve it in you controller this way:</p>
+<pre><code class="lang-php"><span class="variable">$user</span> = User::find(<span class="number">1</span>);
+<span class="variable">$phone</span> = <span class="variable">$user</span>-&gt;phone;
+<span class="comment">// You can work with $phone object like the usual way</span>
 
-<div class="highlight"><pre><span class="nv">$user</span> <span class="o">=</span> <span class="nx">User</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="nv">$phone</span> <span class="o">=</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">phone</span><span class="p">;</span>
-<span class="c1">// You can work with $phone object like the usual way</span>
+<span class="comment">// Returns its property</span>
+<span class="keyword">echo</span> <span class="variable">$phone</span>-&gt;brand;
 
-<span class="c1">// Returns its property</span>
-<span class="k">echo</span> <span class="nv">$phone</span><span class="o">-&gt;</span><span class="na">brand</span><span class="p">;</span>
-
-<span class="c1">// Or updates it</span>
-<span class="nv">$phone</span><span class="o">-&gt;</span><span class="na">brand</span> <span class="o">=</span> <span class="s2">"Samsung"</span><span class="p">;</span>
-<span class="nv">$phone</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
-</pre></div>
-
-<p>Note: the name of the method where you call the <code>hasOne</code> isn't have to be the same with the related model name. You can name it anything you want, just make sure it doesn't conflict with exisiting table field name.</p>
-
-<p>In the example above the foreign key in <code>phone</code> table is assumed to be <code>user_id</code> (lowercased related model's name with <code>_id</code> suffix). You can define custom key name as second parameter if your foreign key doesn't match this convention.</p>
-
-<div class="highlight"><pre><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hasOne</span><span class="p">(</span><span class="s1">'Phone'</span><span class="p">,</span> <span class="s1">'custom field name'</span><span class="p">);</span>
-</pre></div>
-
-<h4>
-<a name="defining-the-inverse-relationship" class="anchor" href="#defining-the-inverse-relationship"><span class="octicon octicon-link"></span></a>Defining the Inverse Relationship</h4>
-
+<span class="comment">// Or updates it</span>
+<span class="variable">$phone</span>-&gt;brand = <span class="string">"Samsung"</span>;
+<span class="variable">$phone</span>-&gt;save();</code></pre>
+<p>Note: the name of the method where you call the <code>hasOne</code> isn&#39;t have to be the same with the related model name. You can name it anything you want, just make sure it doesn&#39;t conflict with exisiting table field name.</p>
+<p>In the example above the foreign key in <code>phone</code> table is assumed to be <code>user_id</code> (lowercased related model&#39;s name with <code>_id</code> suffix). You can define custom key name as second parameter if your foreign key doesn&#39;t match this convention.</p>
+<pre><code class="lang-php"><span class="variable">$this</span>-&gt;hasOne(<span class="string">'Phone'</span>, <span class="string">'custom field name'</span>);</code></pre>
+<h4>Defining the Inverse Relationship</h4>
 <p>You can also define the inverse of the relationship. For the example after you get a Phone object, you want to know who is the name owner. In the <code>Phone</code> model you have to call the <code>belongsTo</code> method.</p>
+<pre><code class="lang-php"><span class="class"><span class="keyword">class</span> <span class="title">Phone</span> <span class="keyword">extends</span> <span class="title">Elegant</span>\<span class="title">Model</span> {</span>
+  <span class="keyword">protected</span> <span class="variable">$table</span> = <span class="string">"phone"</span>;
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Phone</span> <span class="k">extends</span> <span class="nx">Elegant\Model</span> <span class="p">{</span>
-  <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s2">"phone"</span><span class="p">;</span>
+  <span class="function"><span class="keyword">function</span> <span class="title">owner</span><span class="params">()</span>
+  {</span>
+    <span class="keyword">return</span> <span class="variable">$this</span>-&gt;belongsTo(<span class="string">'User'</span>);
+  }
+}
 
-  <span class="k">function</span> <span class="nf">owner</span><span class="p">()</span>
-  <span class="p">{</span>
-    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">belongsTo</span><span class="p">(</span><span class="s1">'User'</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<span class="comment">// In your controller:</span>
+<span class="variable">$phone</span> = Phone::find(<span class="number">1</span>);
 
-<span class="c1">// In your controller:</span>
-<span class="nv">$phone</span> <span class="o">=</span> <span class="nx">Phone</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-
-<span class="k">echo</span> <span class="nv">$phone</span><span class="o">-&gt;</span><span class="na">owner</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
-</pre></div>
-
+<span class="keyword">echo</span> <span class="variable">$phone</span>-&gt;owner-&gt;name;</code></pre>
 <p>You can also define a custom foreign key as second parameter to <code>belongsTo</code> method.</p>
-
-<h3>
-<a name="one-to-many" class="anchor" href="#one-to-many"><span class="octicon octicon-link"></span></a>One to Many</h3>
-
-<h4>
-<a name="defining-one-to-many-relationship" class="anchor" href="#defining-one-to-many-relationship"><span class="octicon octicon-link"></span></a>Defining One to Many Relationship</h4>
-
+<h3 id='relationship/one-to-many'>One to Many</h3 id='relationship/one-to-many'>
+<h4>Defining One to Many Relationship</h4>
 <p>An example of one to many relationship is an article can has one or many comments. To define such relationship, you can do this:</p>
+<pre><code class="lang-php"><span class="class"><span class="keyword">class</span> <span class="title">Article</span> <span class="keyword">extends</span> <span class="title">Elegant</span>\<span class="title">Model</span> {</span>
+  <span class="keyword">protected</span> <span class="variable">$table</span> = <span class="string">"article"</span>;
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Article</span> <span class="k">extends</span> <span class="nx">Elegant\Model</span> <span class="p">{</span>
-  <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s2">"article"</span><span class="p">;</span>
-
-  <span class="k">function</span> <span class="nf">comments</span><span class="p">()</span>
-  <span class="p">{</span>
-    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hasMany</span><span class="p">(</span><span class="s1">'Comment'</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-
+  <span class="function"><span class="keyword">function</span> <span class="title">comments</span><span class="params">()</span>
+  {</span>
+    <span class="keyword">return</span> <span class="variable">$this</span>-&gt;hasMany(<span class="string">'Comment'</span>);
+  }
+}</code></pre>
 <p>The difference between <code>hasOne</code> and <code>hasMany</code> is the <code>hasMany</code> will return an array of matched models, while <code>hasOne</code> will return only one model. So in your controller, you should use like this:</p>
+<pre><code class="lang-php"><span class="variable">$article</span> = Article::find(<span class="number">1</span>);
 
-<div class="highlight"><pre><span class="nv">$article</span> <span class="o">=</span> <span class="nx">Article</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-
-<span class="k">foreach</span><span class="p">(</span><span class="nv">$article</span><span class="o">-&gt;</span><span class="na">comments</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$comment</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="k">echo</span> <span class="nv">$comment</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
-<h4>
-<a name="defining-the-inverse-relationship-1" class="anchor" href="#defining-the-inverse-relationship-1"><span class="octicon octicon-link"></span></a>Defining the Inverse Relationship</h4>
-
+<span class="keyword">foreach</span>(<span class="variable">$article</span>-&gt;comments() <span class="keyword">as</span> <span class="variable">$comment</span>)
+{
+  <span class="keyword">echo</span> <span class="variable">$comment</span>-&gt;text;
+}</code></pre>
+<h4>Defining the Inverse Relationship</h4>
 <p>As in one to one relationship you can define the inverse relationship between <code>Comment</code> and <code>Article</code> model.</p>
+<pre><code class="lang-php"><span class="class"><span class="keyword">class</span> <span class="title">Comment</span> <span class="keyword">extends</span> <span class="title">Elegant</span>\<span class="title">Model</span> {</span>
+  <span class="keyword">protected</span> <span class="variable">$table</span> = <span class="string">"comment"</span>;
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Comment</span> <span class="k">extends</span> <span class="nx">Elegant\Model</span> <span class="p">{</span>
-  <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s2">"comment"</span><span class="p">;</span>
+  <span class="function"><span class="keyword">function</span> <span class="title">article</span><span class="params">()</span>
+  {</span>
+    <span class="keyword">return</span> <span class="variable">$this</span>-&gt;belongsTo(<span class="string">'Article'</span>);
+  }
+}
 
-  <span class="k">function</span> <span class="nf">article</span><span class="p">()</span>
-  <span class="p">{</span>
-    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">belongsTo</span><span class="p">(</span><span class="s1">'Article'</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<span class="comment">// In controllers</span>
+<span class="variable">$comment</span> = Comment::find(<span class="number">1</span>);
 
-<span class="c1">// In controllers</span>
-<span class="nv">$comment</span> <span class="o">=</span> <span class="nx">Comment</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-
-<span class="k">return</span> <span class="nv">$comment</span><span class="o">-&gt;</span><span class="na">article</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">;</span>
-</pre></div>
-
+<span class="keyword">return</span> <span class="variable">$comment</span>-&gt;article-&gt;title;</code></pre>
 <p>Again, you can set a custom foreign key to <code>belongsTo</code> method as stated in the One to One section.</p>
-
-<h3>
-<a name="many-to-many" class="anchor" href="#many-to-many"><span class="octicon octicon-link"></span></a>Many to Many</h3>
-
-<h4>
-<a name="defining-many-to-many-relationship" class="anchor" href="#defining-many-to-many-relationship"><span class="octicon octicon-link"></span></a>Defining Many to Many Relationship</h4>
-
+<h3 id='relationship/many-to-many'>Many to Many</h3 id='relationship/many-to-many'>
+<h4>Defining Many to Many Relationship</h4>
 <p>Many to many relationship is the most complex relationship. It requires a pivot table to bridge the relation between two models.</p>
-
 <p>An example of this relationship is between an <code>Article</code> model with a <code>Tag</code> model. An article might has one or more tag while a tag can also be in one on more article.</p>
-
 <p>To define the relationship, you should do this:</p>
+<pre><code class="lang-php"><span class="class"><span class="keyword">class</span> <span class="title">Article</span> <span class="keyword">extends</span> <span class="title">Elegant</span>\<span class="title">Model</span> {</span>
+  <span class="keyword">protected</span> <span class="variable">$table</span> = <span class="string">"article"</span>;
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Article</span> <span class="k">extends</span> <span class="nx">Elegant\Model</span> <span class="p">{</span>
-  <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s2">"article"</span><span class="p">;</span>
-
-  <span class="k">function</span> <span class="nf">tags</span><span class="p">()</span>
-  <span class="p">{</span>
-    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">belongsToMany</span><span class="p">(</span><span class="s1">'Tag'</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-
+  <span class="function"><span class="keyword">function</span> <span class="title">tags</span><span class="params">()</span>
+  {</span>
+    <span class="keyword">return</span> <span class="variable">$this</span>-&gt;belongsToMany(<span class="string">'Tag'</span>);
+  }
+}</code></pre>
 <p>To retrieve the tags:</p>
+<pre><code class="lang-php"><span class="variable">$article</span> = Article::find(<span class="number">1</span>);
 
-<div class="highlight"><pre><span class="nv">$article</span> <span class="o">=</span> <span class="nx">Article</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-
-<span class="k">foreach</span><span class="p">(</span><span class="nv">$article</span><span class="o">-&gt;</span><span class="na">tags</span> <span class="k">as</span> <span class="nv">$tag</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="k">echo</span> <span class="nv">$tag</span><span class="o">-&gt;</span><span class="na">name</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
+<span class="keyword">foreach</span>(<span class="variable">$article</span>-&gt;tags <span class="keyword">as</span> <span class="variable">$tag</span>)
+{
+  <span class="keyword">echo</span> <span class="variable">$tag</span>-&gt;name;
+}</code></pre>
 <p>Or you can do vice-versa in <code>Tag</code> model:</p>
+<pre><code class="lang-php"><span class="class"><span class="keyword">class</span> <span class="title">Tag</span> <span class="keyword">extends</span> <span class="title">Elegant</span>\<span class="title">Model</span> {</span>
+  <span class="keyword">protected</span> <span class="variable">$table</span> = <span class="string">"tag"</span>;
 
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Tag</span> <span class="k">extends</span> <span class="nx">Elegant\Model</span> <span class="p">{</span>
-  <span class="k">protected</span> <span class="nv">$table</span> <span class="o">=</span> <span class="s2">"tag"</span><span class="p">;</span>
+  <span class="function"><span class="keyword">function</span> <span class="title">articles</span><span class="params">()</span>
+  {</span>
+    <span class="keyword">return</span> <span class="variable">$this</span>-&gt;belongsToMany(<span class="string">'Article'</span>);
+  }
+}
 
-  <span class="k">function</span> <span class="nf">articles</span><span class="p">()</span>
-  <span class="p">{</span>
-    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">belongsToMany</span><span class="p">(</span><span class="s1">'Article'</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="c1">// In controllers</span>
-<span class="nv">$tag</span> <span class="o">=</span> <span class="nx">Tag</span><span class="o">::</span><span class="na">find</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="k">foreach</span><span class="p">(</span><span class="nv">$tag</span><span class="o">-&gt;</span><span class="na">articles</span> <span class="k">as</span> <span class="nv">$article</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="k">echo</span> <span class="nv">$article</span><span class="o">-&gt;</span><span class="na">title</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
-<h4>
-<a name="customizing-pivot-table" class="anchor" href="#customizing-pivot-table"><span class="octicon octicon-link"></span></a>Customizing Pivot Table</h4>
-
+<span class="comment">// In controllers</span>
+<span class="variable">$tag</span> = Tag::find(<span class="number">1</span>);
+<span class="keyword">foreach</span>(<span class="variable">$tag</span>-&gt;articles <span class="keyword">as</span> <span class="variable">$article</span>)
+{
+  <span class="keyword">echo</span> <span class="variable">$article</span>-&gt;title;
+}</code></pre>
+<h4>Customizing Pivot Table</h4>
 <p>By default Elegant will assume that the name of pivot table is the concatenated name of two models using underscore in alphabetical order. So if the models are <code>Article</code> and <code>Tag</code>, the default pivot table name is <code>article_tag</code>.</p>
-
 <p>If you want to use another name for the pivot table you can specify in second parameter of the <code>belongsToMany</code> method.</p>
-
-<div class="highlight"><pre><span class="c1">// Use a custom pivot table name</span>
-<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">belongsToMany</span><span class="p">(</span><span class="s1">'Tag'</span><span class="p">,</span> <span class="s1">'custom pivot name'</span><span class="p">);</span>
-</pre></div>
-
+<pre><code class="lang-php"><span class="comment">// Use a custom pivot table name</span>
+<span class="variable">$this</span>-&gt;belongsToMany(<span class="string">'Tag'</span>, <span class="string">'custom pivot name'</span>);</code></pre>
 <p>You can also customize the name of associated keys in the pivot. By default it uses the same convention as in One to One or One to Many. So for the example, in <code>article_tag</code> table, the fields will be <code>article_id</code> and <code>tag_id</code>.</p>
-
 <p>To customize the key name, you can pass third and/or fourth parameter. The third parameter is the associated key of current model, while the fourth is for the related model.</p>
-
 <p>Basicly, this is a <code>belongsToMany</code> will look like:</p>
+<pre><code class="lang-php"><span class="variable">$this</span>-&gt;belongsToMany(<span class="string">'Tag'</span>, <span class="string">'article_tag'</span>, <span class="string">'article_id'</span>, <span class="string">'tag_id'</span>);</code></pre>
 
-<div class="highlight"><pre><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">belongsToMany</span><span class="p">(</span><span class="s1">'Tag'</span><span class="p">,</span> <span class="s1">'article_tag'</span><span class="p">,</span> <span class="s1">'article_id'</span><span class="p">,</span> <span class="s1">'tag_id'</span><span class="p">);</span>
-</pre></div>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/nazieb">nazieb</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+  </div>
+</div>
+</body>
 </html>
