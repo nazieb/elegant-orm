@@ -20,12 +20,16 @@ class Result implements Countable, IteratorAggregate {
 
 	function row()
 	{
+		if($this->query->num_rows == 0) return;
+
 		$row = $this->query->row_array();
 		return new Row($this->model, $row);
 	}
 
 	function rows()
 	{
+		if($this->query->num_rows == 0) return;
+
 		$class = get_class($this->model);
 		$this->rows = array();
 
