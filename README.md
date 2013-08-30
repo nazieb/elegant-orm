@@ -389,3 +389,10 @@ $comments = $article->approvedComments()->limit(5)->get();
 // Or sort the comments by date
 $comments = $article->approvedComments()->order_by('date', 'desc')->get();
 ```
+
+## Miscellaneous
+### Debugging
+If you want to debug your application using CI Profiler class, you should define a constant named `ELEGANT_DEBUG` with value `true` in `config/constants.php` file. Otherwise the queries will not show up in the profiling result.
+```php
+define('ELEGANT_DEBUG', true);
+```
