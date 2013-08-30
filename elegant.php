@@ -38,10 +38,12 @@ class Elegant {
 }
 
 spl_autoload_register(function($class){
-	if(strpos($class, "Elegant\\") !== 0) return;
+	if(strpos($class, "Elegant\\") === 0)
+	{
+		$classname = str_replace("Elegant\\", "", $class);
 
-	$classname = str_replace("Elegant\\", "", $class);
+		$path = 'src/' . strtolower( str_replace("\\", "/", $classname) ) . EXT;
+		require_once $path;
+	}
 
-	$path = 'src/' . strtolower( str_replace("\\", "/", $classname) ) . ".php";
-	require_once $path;
 });
