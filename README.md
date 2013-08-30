@@ -4,7 +4,7 @@ ORM for CodeIgniter based on Laravel's Eloquent. The Elegant ORM brings the beau
 
 ## Installation
 
-- Download the zipball
+- Download the zipball of the latest release at https://github.com/nazieb/elegant-orm/releases
 - Extract to your `application/libraries` directory
 - In your `config/autoload.php` file, add `elegant-orm/elegant` to `$autoload['libraries']`. So it will look like this:
 
@@ -340,4 +340,52 @@ To customize the key name, you can pass third and/or fourth parameter. The third
 Basicly, this is a `belongsToMany` will look like:
 ```php
 $this->belongsToMany('Tag', 'article_tag', 'article_id', 'tag_id');
+```
+
+### Working With Related Model's Record
+Let's say an `Article` model might have many `Comment`. But when you querying an article, probably you want to show the approved comments only, which in this case have `status` equals to 1.
+
+You can do it in two ways. The first one is by chaining the relation object with `where` method (or any CodeIgniter Active Record class).
+```php
+// Using example above
+$article = Article::find(1);
+
+$comments = $article->comments()->where('status', 1)->get();
+foreach($comments as $comment)
+{
+  echo $comment->text;
+}
+```
+
+Note that you need to call the `comments` as a method (`$article->comments()` instead of `$article->comments`). And you will always need to call the `get()` method at the end to finally fetch the records you want.
+
+The second way is by chaining the `hasMany` or `belongsToMany` method right after you define the relationship.
+```php
+class Article extends Elegant\Model {
+  protected $table = "article";
+  
+  function approvedComments()
+  {
+    return $this->hasMany('Comment')->where('status', 1);
+  }
+}
+```
+
+This way you can have a cleaner syntax without needs to call `get()` method. In your controllers you can do this:
+```php
+$article = Article::find(1);
+
+foreach($article->approvedComments as $comment)
+{
+  echo $comment->text;
+}
+```
+
+You can call the `approvedComments` as a property to do the loop like example above, or you call it as a method to chain it again with another Active Record method. Just don't forget to call `get()` at the end.
+```php
+// Show only 5 first comments
+$comments = $article->approvedComments()->limit(5)->get();
+
+// Or sort the comments by date
+$comments = $article->approvedComments()->order_by('date', 'desc')->get();
 ```
