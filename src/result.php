@@ -51,6 +51,21 @@ class Result implements Countable, IteratorAggregate {
 		return $this->row();
 	}
 
+	// Eager loading
+	function load($method)
+	{
+		if(!is_callable(array($this->model, $method))) return false;
+
+		$relation = call_user_func(array($this->model, $method));
+
+		$primaries = array();
+
+		foreach($this->rows as $row)
+			$primaries[] = $row->getData( $row->getPrimaryKey() );
+
+		$this->rows = $relation->eagerLoad( $this->rows, $primaries, $method );
+	}
+
 	// Implements IteratorAggregate function
 	public function getIterator()
 	{

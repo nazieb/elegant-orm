@@ -20,6 +20,10 @@ class Row {
 		// Are we trying to get a related model?
 		if(method_exists($this->model, $field))
 		{
+			// Is it eager loaded?
+			$related = $this->model->getRelation($field);
+			if($related !== false) return $related;
+
 			$relation = call_user_func(array($this->model, $field));
 
 			$data = $relation->getResults();

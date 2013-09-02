@@ -21,6 +21,9 @@ class Model {
 
 	protected $data = array();
 
+	// To stored loaded relation
+	protected $relations = array();
+
 	function __construct(array $newData = array())
 	{
 		$this->ci =& get_instance();
@@ -264,6 +267,16 @@ class Model {
 		$pivot_builder = new QueryBuilder($this->db_group, $pivot_table);
 
 		return new Relations\BelongsToMany($this, new $related, $pivot_builder, $foreign_key, $other_key);
+	}
+
+	function setRelation($name, Relations\Relation $relation)
+	{
+		$this->relations[ $name ] = $relation->relate( $this );
+	}
+
+	function getRelation($name)
+	{
+		return isset( $this->relations[ $name ] ) ? $this->relations[ $name ] : null;
 	}
 
 	// ======================================
