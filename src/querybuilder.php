@@ -27,6 +27,15 @@ class QueryBuilder {
 		return call_user_func_array( array($this->db_conn, $name), $arguments );
 	}
 
+	function select($columns = array())
+	{
+		if (empty($columns)) $columns = '*';
+
+		elseif (is_array($columns)) $columns = implode(', ', $columns);
+
+		$this->db_conn->select($columns);
+	}
+
 	function insert($data)
 	{
 		$insert = $this->db_conn->insert( $this->table, $data );

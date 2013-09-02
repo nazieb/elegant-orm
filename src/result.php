@@ -66,6 +66,20 @@ class Result implements Countable, IteratorAggregate {
 		$this->rows = $relation->eagerLoad( $this->rows, $primaries, $method );
 	}
 
+	function toArray()
+	{
+		$array = array();
+
+		foreach($this->rows as $row) $array[] = $row->toArray();
+
+		return $array;
+	}
+
+	function json()
+	{
+		return json_encode( $this->toArray() );
+	}
+
 	// Implements IteratorAggregate function
 	public function getIterator()
 	{

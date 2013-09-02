@@ -40,23 +40,31 @@ class Model {
 		return new QueryBuilder($this->db_group, $this->table);
 	}
 
-	protected function all()
+	protected function all($columns = array())
 	{
-		$result = new Result( $this, $this->newQuery() );
+		$builder = $this->newQuery();
+
+		if(!empty($columns)) $builder->select($columns);
+
+		$result = new Result( $this, $builder );
 		return $result->rows();
 	}
 
-	protected function get()
+	protected function get($columns = array())
 	{
-		if(is_null( $this->queryBuilder )) return $this->all();
+		if(is_null( $this->queryBuilder )) return $this->all($columns);
+
+		if(!empty($columns)) $this->queryBuilder->select($columns);
 
 		$result = new Result( $this, $this->queryBuilder );
 		return $result->rows();
 	}
 
-	protected function first()
+	protected function first($columns = array())
 	{
 		$builder = $this->queryBuilder ?: $this->newQuery();
+
+		if(!empty($columns)) $builder->select($columns);
 
 		$result = new Result( $this, $builder );
 		return $result->first();
@@ -211,13 +219,22 @@ class Model {
 			$this->data[ $field ] = $value;
 	}
 
+	function toArray()
+	{
+		$array = $this->data;
+
+		foreach($this->relations as $relation => $models)
+		{
+			foreach($models as $model)
+				$array[ $relation ][] = $model->toArray();
+		}
+
+		return $array;
+	}
+
 	function json()
 	{
-		$json = array();
-
-		foreach($this->get() as $row) $json[] = $row->__toString();
-
-		return json_encode($json);
+		return json_encode( $this->toArray() );
 	}
 
 	// ======================================
@@ -279,6 +296,25 @@ class Model {
 		return isset( $this->relations[ $name ] ) ? $this->relations[ $name ] : null;
 	}
 
+	// Eager loading for a single row? Just call the method
+	function load($related)
+	{
+		if(!method_exists($this, $related)) return false;
+
+		$this->setRelation( $related, $this->$related() );
+	}
+
+	// ======================================
+	// Aggregate Methods
+	// ======================================
+
+	function max($field)
+	{
+		// $builder = $this->queryBuilder ?: $this->newQuery();
+
+
+	}
+
 	// ======================================
 	// Magic Methods
 	// ======================================
@@ -299,7 +335,6 @@ class Model {
 
 			return call_user_func_array( array($this, $scope), $arguments );
 		}
-
 
 		if(is_null( $this->queryBuilder )) $this->queryBuilder = $this->newQuery();
 
