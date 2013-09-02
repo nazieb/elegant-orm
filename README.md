@@ -69,6 +69,18 @@ $user = User::where('status', 1)->first();
 echo $user->name;
 ```
 
+### Selecting Specific Columns
+By default Elegant will generate a `SELECT *` query for all examples above. If you think this is a bad practice, you can select only specific columns you need in several ways:
+
+```php
+User::all( array('id', 'username') );
+User::where('status', 1)->get( array('id', 'username') );
+User::select( array('id', 'username') )->get();
+User::where('status', 1)->first( array('id', 'username') );
+```
+
+Note: for now `find()` method doesn't support selecting specific column.
+
 ## Create, Update & Delete
 ### Creating A New Model
 ```php
@@ -452,6 +464,31 @@ SELECT * FROM comment WHERE article_id IN (1, 2 ,3 ,4 ,5 .....);
 The secret is the `load()` method. Pass the name of the relation method (`comments`) then it will smartly build the query using `IN` keyword and match each comment to the right article. Note that when fetching the comments using eager load, you should always call it as a property instead of as a method as in the example above (`$articles->comments`, not `$articles->comments()`).
 
 ## Miscellaneous
+### Converting Models to Array / JSON
+The Elegant query result is always returned as a special `Elegant\Result` object. If you wish to work with plain array instead, you may convert is using `toArray()` method.
+
+```php
+$users = User::all();
+return $users->toArray()
+```
+
+If you want to include a related model, you can use the eager load method
+```php
+$articles = Article::all();
+articles->load('comments');
+
+return $articles->toArray();
+```
+
+You can also convert the models to JSON object instead. Especially if you work with Javascript library like Backbone.js. To do so you can call `json()` method
+```php
+$articles = Article::all();
+articles->load('comments');
+
+echo $articles->json();
+```
+
+
 ### Debugging
 If you want to debug your application using CI Profiler class, you should define a constant named `ELEGANT_DEBUG` with value `true` in `config/constants.php` file. Otherwise the queries will not show up in the profiling result.
 ```php
