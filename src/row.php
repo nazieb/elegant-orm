@@ -22,12 +22,12 @@ class Row {
 		{
 			// Is it eager loaded?
 			$related = $this->model->getRelation($field);
-			if($related !== false) return $related;
+			if($related !== null) return $related;
 
 			$relation = call_user_func(array($this->model, $field));
 
 			$data = $relation->getResults();
-			return $data;
+			return $data ?: array();
 		}
 
 		return $this->model->$field;
