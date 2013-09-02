@@ -81,6 +81,23 @@ User::where('status', 1)->first( array('id', 'username') );
 
 Note: for now `find()` method doesn't support selecting specific column.
 
+### Aggregates Methods
+Elegant also provides aggregates method, such as `max`, `min`, `avg`, `sum`, and `count`. You can call these methods right away or chain them with some CI Active Records method.
+
+```php
+$total = User::count();
+
+$max = Product::max('price');
+
+// Example of chaining with where()
+$min = Product::where('category', 1)->min('price');
+
+$avg = Product::avg('price');
+
+// Another chaining example
+$sum = Order::where('status', 1)->sum('price');
+```
+
 ## Create, Update & Delete
 ### Creating A New Model
 ```php
