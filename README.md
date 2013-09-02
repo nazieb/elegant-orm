@@ -69,6 +69,13 @@ $user = User::where('status', 1)->first();
 echo $user->name;
 ```
 
+### 'Pluck'-ing
+Plucking is the way to retrieve a single column value of the first record.
+```php
+// Returns the `name` column of the first row
+echo 'Newest user is: ' . User::order_by('id', 'desc')->pluck('name');
+```
+
 ### Selecting Specific Columns
 By default Elegant will generate a `SELECT *` query for all examples above. If you think this is a bad practice, you can select only specific columns you need in several ways:
 
