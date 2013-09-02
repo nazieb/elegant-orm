@@ -315,13 +315,42 @@ class Model {
 	// Aggregate Methods
 	// ======================================
 
-	function max($field)
+	protected function aggregates($function, $field)
 	{
-		$builder = $this->queryBuilder ?: $this->newQuery();
-		$builder->select('max(`'.$field.'`) as max');
+		if(empty($this->queryBuilder))
+			$this->queryBuilder = $this->newQuery();
 
-		$result = new Result( $this, $builder );
+		$this->queryBuilder->select($function.'(`'.$field.'`) as aggr');
 
+		$result = $this->first();
+		return $result->aggr;
+	}
+
+	protected function max($field)
+	{
+		return $this->aggregates(__FUNCTION__, $field);
+	}
+
+	protected function min($field)
+	{
+		return $this->aggregates(__FUNCTION__, $field);
+	}
+
+	protected function avg($field)
+	{
+		return round( $this->aggregates(__FUNCTION__, $field), 2);
+	}
+
+	protected function sum($field)
+	{
+		return $this->aggregates(__FUNCTION__, $field);
+	}
+
+	protected function count($field = null)
+	{
+		if (empty($field)) $field = $this->getPrimaryKey();
+
+		return $this->aggregates(__FUNCTION__, $field);
 	}
 
 	// ======================================
