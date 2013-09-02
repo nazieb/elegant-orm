@@ -3,6 +3,7 @@
 use Countable;
 use ArrayIterator;
 use IteratorAggregate;
+use EmptyIterator;
 use Elegant\Model;
 use Elegant\Result;
 use Elegant\Row;
@@ -58,13 +59,17 @@ abstract class Relation implements Countable, IteratorAggregate {
 	// Implements IteratorAggregate function so the result can be looped without needs to call get() first.
 	public function getIterator()
 	{
-		return $this->getResults();
+		$return = $this->getResults();
+
+		return ($return instanceof Result) ? $return : new EmptyIterator;
 	}
 
 	// Implements Countable function
 	public function count()
 	{
-		return count( $this->getResults() );
+		$result = $this->getResults();
+
+		return ($return instanceof Result) ? count( $this->getResults() ) : 0;
 	}
 
 	// Chains with Active Record method if available
@@ -78,10 +83,10 @@ abstract class Relation implements Countable, IteratorAggregate {
 				$parent_data = $this->parent->getData();
 
 				// If parent data is empty then it means we are eager loading.
-				// No need to generate the "join", it will be generated later with eager loading method
 				if(!empty($parent_data))
 					$this->join = $this->setJoin();
 
+				// No need to generate the "join", it will be generated later with eager loading method
 				else
 					$this->join = $this->related;
 			}
@@ -89,6 +94,8 @@ abstract class Relation implements Countable, IteratorAggregate {
 			$return = call_user_func_array(array( $this->join, $name ), $param);
 
 			if($return instanceof Result or $return instanceof Row) return $return;
+
+			elseif($name == 'get') return new EmptyIterator;
 
 			return $this;
 		}
