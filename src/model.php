@@ -91,6 +91,13 @@ class Model {
 		return is_array($id) ? $result->rows() : $result->first();
 	}
 
+	protected function pluck($field)
+	{
+		$row = $this->first( array($field) );
+
+		return $row->$field;
+	}
+
 	protected static function create($data)
 	{
 		if(!is_array($data) or empty($data)) return false;
@@ -310,8 +317,10 @@ class Model {
 
 	function max($field)
 	{
-		// $builder = $this->queryBuilder ?: $this->newQuery();
+		$builder = $this->queryBuilder ?: $this->newQuery();
+		$builder->select('max(`'.$field.'`) as max');
 
+		$result = new Result( $this, $builder );
 
 	}
 

@@ -51,6 +51,13 @@ class Result implements Countable, IteratorAggregate {
 		return $this->row();
 	}
 
+	function pluck($field)
+	{
+		$first = $this->row();
+
+		return $first->$field;
+	}
+
 	// Eager loading
 	function load($method)
 	{
