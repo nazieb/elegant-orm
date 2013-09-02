@@ -69,7 +69,7 @@ abstract class Relation implements Countable, IteratorAggregate {
 	{
 		$result = $this->getResults();
 
-		return ($return instanceof Result) ? count( $this->getResults() ) : 0;
+		return ($result instanceof Result) ? count( $this->getResults() ) : 0;
 	}
 
 	// Chains with Active Record method if available
