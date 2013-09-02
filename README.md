@@ -390,6 +390,67 @@ $comments = $article->approvedComments()->limit(5)->get();
 $comments = $article->approvedComments()->order_by('date', 'desc')->get();
 ```
 
+## Eager Loading
+### Using Eager Load
+Eager loading is a technique to reduce the number of queries needed to relate one model to another. Now take a look at this model:
+```php
+class Article extends Elegant\Model {
+  protected $table = "article";
+  
+  function comments()
+  {
+    return $this->hasMany('Comment');
+  }
+}
+```
+
+Then, for the example we want to show all articles along with their comments. So perhaps you will use this code:
+```php
+$articles = Article::all();
+
+foreach($articles as $article)
+{
+  echo $article->title;
+
+  foreach($article->comments() as $comment)
+    echo $comment->text;
+}
+```
+
+There's nothing wrong with that code, except that each time you call the relationship method, (the `comments()` method) to retrieve the comments a new query is built. So imagine if we have 50 articles to be shown, that means the loop will run 51 queries (the 1 is for fetching all articles) like this:
+
+```sql
+SELECT * FROM article;
+
+SELECT * FROM comment WHERE article_id = 1;
+SELECT * FROM comment WHERE article_id = 2;
+SELECT * FROM comment WHERE article_id = 3;
+...
+```
+
+To solve that problem, Elegant provides the support for eager loading. Now take a look at this code
+
+```php
+$articles =  Article::all();
+$articles->load('comments');
+
+foreach($articles as $article)
+{
+  echo $article->title;
+
+  foreach($articles->comments as $comment)
+    echo $comment->text;
+}
+```
+
+It will produce the same output, but with a drastically decrease in the number of queries. Instead of running N + 1 queries like example above, it will run queries like this:
+```sql
+SELECT * FROM article;
+SELECT * FROM comment WHERE article_id IN (1, 2 ,3 ,4 ,5 .....);
+```
+
+The secret is the `load()` method. Pass the name of the relation method (`comments`) then it will smartly build the query using `IN` keyword and match each comment to the right article. Note that when fetching the comments using eager load, you should always call it as a property instead of as a method as in the example above (`$articles->comments`, not `$articles->comments()`).
+
 ## Miscellaneous
 ### Debugging
 If you want to debug your application using CI Profiler class, you should define a constant named `ELEGANT_DEBUG` with value `true` in `config/constants.php` file. Otherwise the queries will not show up in the profiling result.
