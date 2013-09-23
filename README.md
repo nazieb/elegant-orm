@@ -487,6 +487,82 @@ SELECT * FROM comment WHERE article_id IN (1, 2 ,3 ,4 ,5 .....);
 
 The secret is the `load()` method. Pass the name of the relation method (`comments`) then it will smartly build the query using `IN` keyword and match each comment to the right article. Note that when fetching the comments using eager load, you should always call it as a property instead of as a method as in the example above (`$articles->comments`, not `$articles->comments()`).
 
+## Accessors and Mutators
+Sometimes you want to transform some of your model's value when setting or getting them. The accessors will transform your model value before returning it to your application, so you don't have to do the transformation by yourself each time you need that value. While the mutators will transform it before you save it to the database, freeing yourself from doing it every time you gonna insert a new row.
+
+### Accessors
+Example of accessors:
+```php
+class User extends Elegant\Model {
+  protected $table = "user";
+  
+  function getAttrFirstName($value)
+  {
+    return strtoupper($value);
+  }
+}
+```
+
+That way, in your controllers every time you echo or use the `first_name` field from a User model, it will always in all capital letter despite the actual value saved.
+
+```php
+$user = User::find(1);
+echo $user->first_name; // will echo something like 'JOHN'
+```
+
+### Mutators
+Example of mutators:
+```php
+class User extends Elegant\Model {
+  protected $table = "user";
+  
+  function setAttrFirstName($value)
+  {
+    return strtolower($value);
+  }
+}
+```
+
+So when you save a new User or updating an existing one's first name, the value will be transformed into lowercase.
+
+```php
+$user = new User;
+$user->first_name = 'JOHN';
+$user->save();
+```
+
+In example above the value will be lowercased upon saving, so the in database the first_name value will be: `john`
+
+### Conventions
+When you want to declare a mutator/accessor method, here is some rules you need to understand:
+- The methods name needs to in camelCase
+- Accessors should be prefixed with `getAttr` while mutators with `setAttr` like in the example above
+- Accessors and mutators actually receive two parameters. The first is the value of the field you want to transform, and the second is the model object (optional) in case you want to look for some reference to other field.
+
+Example:
+```php
+class User extends Elegant\Model {
+  protected $table = "user";
+  
+  function getAttrLastName($value, $model)
+  {
+    // look up to "gender" field to define salutation to be attached
+    $salutation = $model->gender == 'male' ? 'Mr.' : 'Mrs.';
+    return $salutation . ' '  . ucwords($value);
+  }
+}
+```
+- You may define an accessor for a field that actually doesn't exists in database. For the example in your table you only have `first_name` and `last_name` field. If you want to show a full name, instead of echoing the fields one by one you can do this:
+
+```php
+  function getAttrFullName($value, $model)
+  {
+    // $value will be empty since the field doesn't exist.
+    // use another field instead
+    return $model->first_name .' '. $model->last_name;
+  }
+```
+
 ## Miscellaneous
 ### Converting Models to Array / JSON
 The Elegant query result is always returned as a special `Elegant\Result` object. If you wish to work with plain array instead, you may convert is using `toArray()` method.
