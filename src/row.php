@@ -39,6 +39,11 @@ class Row {
 		$this->model->$field = $value;
 	}
 
+	function __isset($field)
+	{
+		return !empty($this->model->$field);
+	}
+
 	function __call($name, $arguments)
 	{
 		if(method_exists($this->model, $name))

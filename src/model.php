@@ -16,6 +16,7 @@ class Model {
 	protected $per_page = 20;
 
 	protected $queryBuilder = null;
+	protected $pagingBuilder = null;
 
 	public $exists = false;
 
@@ -40,6 +41,13 @@ class Model {
 		return new QueryBuilder($this->db_group, $this->table);
 	}
 
+	protected function query()
+	{
+		$this->newQuery();
+
+		return $this;
+	}
+
 	protected function all($columns = array())
 	{
 		$builder = $this->newQuery();
@@ -55,6 +63,8 @@ class Model {
 		if(is_null( $this->queryBuilder )) return $this->all($columns);
 
 		if(!empty($columns)) $this->queryBuilder->select($columns);
+
+		$this->pagingBuilder = clone $this->queryBuilder;
 
 		$result = new Result( $this, $this->queryBuilder );
 		return $result->rows();
@@ -188,20 +198,78 @@ class Model {
 		$this->queryBuilder->delete();
 	}
 
-	protected function for_page($page, $per_page = null)
+	protected function paging($page, $per_page = null)
 	{
 		$page = intval($page);
-		if(empty($page)) return false;
+		if(empty($page) or $page < 0) $page = 1;
 
 		if(empty($per_page)) $per_page = $this->per_page;
 
 		$offset = ($page - 1) * $per_page;
 
-		$builder = $this->queryBuilder ?: $this->newQuery();
+		if(!$this->queryBuilder)
+			$this->queryBuilder = $this->newQuery();
 
-		$builder->limit($per_page, $offset);
+		$this->queryBuilder->limit($per_page, $offset);
+	}
+
+	protected function for_page($page, $per_page = null)
+	{
+		$this->paging($page, $per_page);
 
 		return $this->get();
+	}
+
+	protected function paginate($per_page = 20, $uri_key = 'page', $link_suffix = '')
+	{
+		$per_page = intval($per_page);
+		if($per_page <= 0) $per_page = 20;
+
+		$uri_segment = null;
+		$uri_array = $this->ci->uri->segment_array();
+
+		foreach($uri_array as $i => $segment_name)
+		{
+			if($uri_key == $segment_name)
+			{
+				$uri_segment = $i;
+				break;
+			}
+		}
+
+		$is_odd = (!empty($uri_segment) and $uri_segment % 2 == 0);
+
+		$uri = $this->ci->uri->uri_to_assoc( (!$is_odd ? 1 : 2) );
+		unset($uri[$uri_key]);
+
+		if(count($uri) == 1 and reset($uri) == false)
+		{
+			$key = reset( array_keys($uri) );
+			$uri[ $key ] = 'index';
+		}
+
+		$this->ci->config->load('pagination', TRUE);
+		$config = $this->ci->config->item('pagination');
+
+		$builder = $this->pagingBuilder ?: ($this->queryBuilder ?: $this->newQuery());
+		$builder->offset(false);
+
+		$base_url = $this->ci->uri->assoc_to_uri($uri).'/'.$uri_key;
+		if($is_odd) $base_url = $this->ci->uri->segment(1) . '/' . $base_url;
+
+		$config['base_url'] = site_url( $base_url );
+		$config['per_page'] = $per_page;
+		$config['total_rows'] = $builder->count_all_results();
+		$config['uri_segment'] = $uri_segment + 1;
+
+		$this->ci->load->library('pagination', $config);
+
+		$links = $this->ci->pagination->create_links();
+
+		if(!empty($link_suffix))
+			$links = preg_replace('/'.$uri_key.'\/([0-9]+)?/', '${0}'.$link_suffix, $links);
+
+		return $links;
 	}
 
 	function getPrimaryKey()
@@ -394,7 +462,8 @@ class Model {
 
 	function __get($field)
 	{
-		$value = isset( $this->data[ $field ] ) ? $this->data[ $field ] : null;
+		if(!isset( $this->data[ $field ] )) return null;
+		$value = $this->data[ $field ];
 
 		$accessor = "getAttr". Helper::camelCase( $field );
 
@@ -403,11 +472,11 @@ class Model {
 
 	function __set($field, $value)
 	{
-		$mutator = "setAttr". Helper::camelCase( $field );
-
-		if( method_exists($this, $mutator) )
-			$value = call_user_func(array($this, $mutator), $value, $this);
-
 		$this->setData( $field, $value );
+	}
+
+	function __isset($field)
+	{
+		return !empty($this->data[ $field ]);
 	}
 }

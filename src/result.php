@@ -28,10 +28,10 @@ class Result implements Countable, IteratorAggregate {
 
 	function rows()
 	{
-		if($this->query->num_rows == 0) return;
+		$this->rows = array();
+		if($this->query->num_rows == 0) return $this;
 
 		$class = get_class($this->model);
-		$this->rows = array();
 
 		foreach($this->query->result_array() as $rowData)
 		{

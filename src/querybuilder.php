@@ -27,6 +27,11 @@ class QueryBuilder {
 		return call_user_func_array( array($this->db_conn, $name), $arguments );
 	}
 
+	function __clone()
+	{
+		$this->db_conn = clone $this->db_conn;
+	}
+
 	function select($columns = array())
 	{
 		if (empty($columns)) $columns = '*';
