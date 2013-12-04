@@ -461,19 +461,24 @@ class Model {
 	}
 
 	function __get($field)
-	{
+    {
 		if(!isset( $this->data[ $field ] )) return null;
-		$value = $this->data[ $field ];
+ 		$value = $this->data[ $field ];
 
 		$accessor = "getAttr". Helper::camelCase( $field );
 
 		return method_exists($this, $accessor) ? call_user_func(array($this, $accessor), $value, $this) : $value;
 	}
 
-	function __set($field, $value)
-	{
+    function __set($field, $value)
+    {
+		$mutator = "setAttr". Helper::camelCase( $field );
+
+		if( method_exists($this, $mutator) )
+			$value = call_user_func(array($this, $mutator), $value, $this);
+
 		$this->setData( $field, $value );
-	}
+    }
 
 	function __isset($field)
 	{
