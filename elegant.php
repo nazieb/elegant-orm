@@ -37,6 +37,8 @@ class Elegant {
 
 }
 
+define('EXT', '.php');
+
 spl_autoload_register(function($class){
 	if(strpos($class, "Elegant\\") === 0)
 	{
