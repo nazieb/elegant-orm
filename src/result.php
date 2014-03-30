@@ -20,7 +20,7 @@ class Result implements Countable, IteratorAggregate {
 
 	function row()
 	{
-		if($this->query->num_rows == 0) return;
+		if($this->query->num_rows() == 0) return;
 
 		$row = $this->query->row_array();
 		return new Row($this->model, $row);
@@ -29,7 +29,7 @@ class Result implements Countable, IteratorAggregate {
 	function rows()
 	{
 		$this->rows = array();
-		if($this->query->num_rows == 0) return $this;
+		if($this->query->num_rows() == 0) return $this;
 
 		$class = get_class($this->model);
 
