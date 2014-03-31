@@ -1,4 +1,12 @@
 <?php
+
+// In CI 3 the EXT constant doesn't exist!
+if(!defined('EXT'))
+{
+	define('EXT', '.php');
+}
+
+
 class Elegant {
 
 	function __construct()
@@ -36,8 +44,6 @@ class Elegant {
 	}
 
 }
-
-define('EXT', '.php');
 
 spl_autoload_register(function($class){
 	if(strpos($class, "Elegant\\") === 0)
