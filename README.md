@@ -1,3 +1,11 @@
+## Project Abandoned
+
+Hello, thank you for your interest on Elegant ORM for Code Igniter. But I'm really sorry to say that I can't continue to maintain this library. As you may notice there are some issues & pull requests that still waiting to be handled but I just can't find any spare time to check them.
+
+If you're still interested in using this library, there are some good folks who forked this project and continue to maintain them, check the Network page (https://github.com/nazieb/elegant-orm/network) to see those forked projects.
+
+Once again, thank you and good luck!
+
 # Elegant ORM [BETA]
 
 ORM for CodeIgniter based on Laravel's Eloquent. The Elegant ORM brings the beauty and simplicity of working with Eloquent ORM in Laravel to CodeIgniter framework.
