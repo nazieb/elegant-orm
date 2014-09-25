@@ -387,6 +387,7 @@ $this->belongsToMany('Tag', 'article_tag', 'article_id', 'tag_id');
 ```
 
 ### Working With Related Model's Record
+hehehlololol
 Let's say an `Article` model might have many `Comment`. But when you querying an article, probably you want to show the approved comments only, which in this case have `status` equals to 1.
 
 You can do it in two ways. The first one is by chaining the relation object with `where` method (or any CodeIgniter Active Record class).
